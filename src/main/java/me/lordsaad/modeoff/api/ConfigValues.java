@@ -29,4 +29,8 @@ public final class ConfigValues {
 	public static int plotMarginWidth;
 	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "plot_world_dimension_id", comment = "The ID of the dimension the world the plots are in", defaultValue = 0)
 	public static int plotWorldDimensionID;
+	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "network", id = "contestants_url", comment = "A url that leads to a raw json of the contestants", defaultValue = "http://modoff.info/")
+	public static String urlContestants;
+	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "network", id = "team_url", comment = "A url that leads to a raw json of the team members", defaultValue = "http://modoff.info/")
+	public static String urlTeam;
 }

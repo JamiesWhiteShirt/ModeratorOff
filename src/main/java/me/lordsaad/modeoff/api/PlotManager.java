@@ -19,6 +19,7 @@ public class PlotManager {
 	@Nullable
 	public EntityPlayer player;
 	public int plotID = -1;
+	public BlockPos corner1, corner2;
 
 	public PlotManager(@NotNull EntityPlayer player) {
 		this.uuid = player.getUniqueID();
@@ -26,10 +27,12 @@ public class PlotManager {
 
 		PlotAssigningManager manager = PlotAssigningManager.INSTANCE;
 		plotID = manager.getPlotForUUID(uuid);
+		initPlot();
 	}
 
 	public PlotManager(World world, int plotID) {
 		this.plotID = plotID;
+		initPlot();
 
 		UUID uuid = PlotAssigningManager.INSTANCE.getUUIDForPlot(plotID);
 		if (uuid == null) {
@@ -59,13 +62,7 @@ public class PlotManager {
 		player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 2, pos.getZ() + 0.5);
 	}
 
-	public void teleportToCenter() {
-		if (plotID < 0) return;
-		if (player == null) return;
-
-		if (player.world.provider.getDimension() != ConfigValues.plotWorldDimensionID)
-			player.changeDimension(ConfigValues.plotWorldDimensionID);
-
+	private void initPlot() {
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(ConfigValues.x, ConfigValues.y, ConfigValues.z);
 		pos.add(ConfigValues.plotSize / 2, ConfigValues.plotSize / 2, ConfigValues.plotSize / 2);
 
@@ -74,7 +71,12 @@ public class PlotManager {
 
 		pos.move(EnumFacing.valueOf(ConfigValues.directionOfRows), row * ConfigValues.plotSize + row * ConfigValues.plotMarginWidth);
 		pos.move(EnumFacing.valueOf(ConfigValues.directionOfColumns), column * ConfigValues.plotSize + column * ConfigValues.plotMarginWidth);
-		player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 2, pos.getZ() + 0.5);
+		corner1 = new BlockPos(pos.getX() - (ConfigValues.plotSize / 2), pos.getY(), pos.getZ() - (ConfigValues.plotSize / 2));
+		corner2 = new BlockPos(pos.getX() + (ConfigValues.plotSize / 2), pos.getY(), pos.getZ() + (ConfigValues.plotSize / 2));
+	}
+
+	public void teleportToCenter() {
+		teleportToPlot(player, plotID);
 	}
 
 }
