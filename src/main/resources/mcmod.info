@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "modeoff",
+    "name": "Modeoff",
+    "description": "A moderation mod for the modoff",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "modoff.info",
+    "updateUrl": "",
+    "authorList": ["LordSaad"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": ["librarianlib"]
+  }
+]
