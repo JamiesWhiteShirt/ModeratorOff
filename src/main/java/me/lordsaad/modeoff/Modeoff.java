@@ -1,6 +1,7 @@
 package me.lordsaad.modeoff;
 
 import me.lordsaad.modeoff.common.CommandAssign;
+import me.lordsaad.modeoff.common.CommandTpPlot;
 import me.lordsaad.modeoff.common.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -52,5 +53,6 @@ public class Modeoff {
 	@Mod.EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandAssign());
+		event.registerServerCommand(new CommandTpPlot());
 	}
 }

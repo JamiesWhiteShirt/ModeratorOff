@@ -25,36 +25,34 @@ public class CommandAssign extends CommandBase {
 	@NotNull
 	@Override
 	public String getName() {
-		return "assign_plot";
+		return "plot_assign";
 	}
 
 	@NotNull
 	@Override
 	public String getUsage(@NotNull ICommandSender sender) {
-		return "/assign_plot [username]";
+		return "/plot_assign [username]";
 	}
 
 	@Override
 	public void execute(@NotNull MinecraftServer server, @NotNull ICommandSender sender, @NotNull String[] args) throws CommandException {
 		EntityPlayer player;
-		if (!(sender instanceof EntityPlayer)) {
-			if (args.length < 1) throw new WrongUsageException(getUsage(sender));
-			else player = getCommandSenderAsPlayer(sender);
-		} else {
-			if (args.length >= 1) player = getPlayer(server, sender, args[0]);
-			else player = (EntityPlayer) sender;
-		}
+		if (args.length >= 1) player = getPlayer(server, sender, args[0]);
+		else if (sender instanceof EntityPlayer) player = getCommandSenderAsPlayer(sender);
+		else throw new WrongUsageException(getUsage(sender));
 
 		PlotAssigningManager manager = PlotAssigningManager.INSTANCE;
 		if (manager.isUUIDRegistered(player.getUniqueID())) {
-			sender.sendMessage(new TextComponentString(TextFormatting.RED + "You're plot has already been registered. Do /plot_tp to teleport to it."));
+			sender.sendMessage(new TextComponentString(TextFormatting.RED + "The plot for '" + TextFormatting.GOLD + player.getName() + TextFormatting.RED + "' has already been registered. Do /plot_tp to teleport to it."));
 			return;
 		}
 
 		manager.saveUUIDToPlot(player.getUniqueID(), manager.getNextAvailableID());
 		PlotManager plotManager = new PlotManager(player);
 		plotManager.teleportToCenter();
-		sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "A plot has been assigned to you successfully! Plot ID: " + manager.getPlotForUUID(player.getUniqueID())));
+		sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "A plot has been assigned for '" + TextFormatting.GOLD + player.getName() + TextFormatting.GREEN + "' successfully! Plot ID: " + manager.getPlotForUUID(player.getUniqueID())));
+		if (!sender.getName().equals(player.getName()))
+			player.sendMessage(new TextComponentString(TextFormatting.GREEN + "A plot has been assigned for '" + TextFormatting.GOLD + player.getName() + TextFormatting.GREEN + "' successfully! Plot ID: " + manager.getPlotForUUID(player.getUniqueID())));
 	}
 
 
