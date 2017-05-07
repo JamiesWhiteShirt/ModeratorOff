@@ -1,6 +1,7 @@
 package me.lordsaad.modeoff.common;
 
 import me.lordsaad.modeoff.api.PlotAssigningManager;
+import me.lordsaad.modeoff.api.PlotManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -10,7 +11,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -45,19 +45,22 @@ public class CommandAssign extends CommandBase {
 			else player = (EntityPlayer) sender;
 		}
 
-			PlotAssigningManager manager = PlotAssigningManager.INSTANCE;
-			if (manager.isUUIDRegistered(player.getUniqueID())) {
-				sender.sendMessage(new TextComponentString(TextFormatting.RED + "You're plot has already been registered. Do /plot_tp to teleport to it."));
-				return;
-			}
-			manager.saveUUIDToPlot(player.getUniqueID(), manager.getNextAvailableID());
-			sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "A plot has been assigned to you successfully! Plot ID: " + manager.getPlotForUUID(player.getUniqueID())));
+		PlotAssigningManager manager = PlotAssigningManager.INSTANCE;
+		if (manager.isUUIDRegistered(player.getUniqueID())) {
+			sender.sendMessage(new TextComponentString(TextFormatting.RED + "You're plot has already been registered. Do /plot_tp to teleport to it."));
+			return;
+		}
+
+		manager.saveUUIDToPlot(player.getUniqueID(), manager.getNextAvailableID());
+		PlotManager plotManager = new PlotManager(player);
+		plotManager.teleportToCenter();
+		sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "A plot has been assigned to you successfully! Plot ID: " + manager.getPlotForUUID(player.getUniqueID())));
 	}
 
 
 	@NotNull
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-		return args.length == 1 ? getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) : Collections.<String>emptyList();
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) : Collections.emptyList();
 	}
 }

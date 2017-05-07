@@ -15,14 +15,14 @@ public final class ConfigValues {
 	public static int y;
 	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "first_plot_z", comment = "The corner of the first plot and will expand to the direction you set below", defaultValue = 0)
 	public static int z;
-	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "expand_direction_x_axis", comment = "If the plots expand east or west", defaultValue = "east")
-	public static String expansionDirectionX;
-	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "expand_direction_z_axis", comment = "If the plots expand north or south", defaultValue = "south")
-	public static String expansionDirectionZ;
 	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "direction_of_rows", comment = "What direction the rows are assigned in", defaultValue = "east")
 	public static String directionOfRows;
+	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "direction_of_columns", comment = "What direction the columns are assigned in", defaultValue = "south")
+	public static String directionOfColumns;
 	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "plot_grid_rows", comment = "The amount of grid rows that exist on the X axis of the plot grid", defaultValue = 4)
 	public static int gridRows;
+	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "plot_grid_columns", comment = "The amount of grid columns that exist on the Y axis of the plot grid", defaultValue = 4)
+	public static int gridColumns;
 	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "plot_size", comment = "The size of each plot", defaultValue = 32)
 	public static int plotSize;
 	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "plot_margin_width", comment = "The width of the space between plots", defaultValue = 4)
