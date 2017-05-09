@@ -15,6 +15,13 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+		if (CommonProxy.teamMembers.contains(event.getEntityPlayer().getUniqueID())) return;
+		if (!CommonProxy.contestants.contains(event.getEntityPlayer().getUniqueID())) {
+			event.setUseItem(Event.Result.DENY);
+			event.setUseBlock(Event.Result.DENY);
+			event.setCanceled(true);
+			return;
+		}
 		PlotManager manager = new PlotManager(event.getEntityPlayer());
 		if (manager.plotID < 0) {
 			event.setUseItem(Event.Result.DENY);
@@ -34,6 +41,12 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void onBreakBlock(BlockEvent.BreakEvent event) {
+		if (CommonProxy.teamMembers.contains(event.getPlayer().getUniqueID())) return;
+		if (!CommonProxy.contestants.contains(event.getPlayer().getUniqueID())) {
+			event.setCanceled(true);
+			return;
+		}
+
 		PlotManager manager = new PlotManager(event.getPlayer());
 		if (manager.plotID < 0) {
 			event.setCanceled(true);
@@ -49,6 +62,11 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void breakSpeed(PlayerEvent.BreakSpeed event) {
+		if (CommonProxy.teamMembers.contains(event.getEntityPlayer().getUniqueID())) return;
+		if (!CommonProxy.contestants.contains(event.getEntityPlayer().getUniqueID())) {
+			event.setCanceled(true);
+			return;
+		}
 		PlotManager manager = new PlotManager(event.getEntityPlayer());
 		if (manager.plotID < 0) {
 			event.setCanceled(true);
@@ -64,6 +82,12 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void place(BlockEvent.PlaceEvent event) {
+		if (CommonProxy.teamMembers.contains(event.getPlayer().getUniqueID())) return;
+		if (!CommonProxy.contestants.contains(event.getPlayer().getUniqueID())) {
+			event.setCanceled(true);
+			return;
+		}
+
 		PlotManager manager = new PlotManager(event.getPlayer());
 		if (manager.plotID < 0) {
 			event.setCanceled(true);

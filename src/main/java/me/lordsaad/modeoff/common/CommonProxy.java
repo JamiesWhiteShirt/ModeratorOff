@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by LordSaad.
@@ -27,8 +28,8 @@ import java.util.Set;
 public class CommonProxy {
 
 	public static File directory;
-	public static Set<String> teamMembers = new HashSet<>();
-	public static Set<String> contestants = new HashSet<>();
+	public static Set<UUID> teamMembers = new HashSet<>();
+	public static Set<UUID> contestants = new HashSet<>();
 
 	public void preInit(FMLPreInitializationEvent event) {
 		EasyConfigHandler.init();
@@ -70,7 +71,7 @@ public class CommonProxy {
 						if (element.isJsonObject()) {
 							JsonObject obj = element.getAsJsonObject();
 							if (obj.has("uuid"))
-								contestants.add(obj.get("uuid").getAsString());
+								contestants.add(UUID.fromString(obj.get("uuid").getAsString()));
 						}
 					}
 				}
@@ -90,7 +91,7 @@ public class CommonProxy {
 						if (element.isJsonObject()) {
 							JsonObject obj = element.getAsJsonObject();
 							if (obj.has("uuid"))
-								teamMembers.add(obj.get("uuid").getAsString());
+								teamMembers.add(UUID.fromString(obj.get("uuid").getAsString()));
 						}
 					}
 				}

@@ -36,10 +36,19 @@ public class CommandAssign extends CommandBase {
 
 	@Override
 	public void execute(@NotNull MinecraftServer server, @NotNull ICommandSender sender, @NotNull String[] args) throws CommandException {
-		EntityPlayer player;
-		if (args.length >= 1) player = getPlayer(server, sender, args[0]);
-		else if (sender instanceof EntityPlayer) player = getCommandSenderAsPlayer(sender);
+		if (sender instanceof EntityPlayer)
+			if (!CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()) || !CommonProxy.contestants.contains(((EntityPlayer) sender).getUniqueID())) {
+				sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
+				return;
+			}
+		EntityPlayer player = null;
+		if (args.length >= 1) {
+			if ((sender instanceof EntityPlayer) && CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()))
+				player = getPlayer(server, sender, args[0]);
+		} else if (sender instanceof EntityPlayer) player = getCommandSenderAsPlayer(sender);
 		else throw new WrongUsageException(getUsage(sender));
+
+		if (player == null) throw new WrongUsageException(getUsage(sender));
 
 		PlotAssigningManager manager = PlotAssigningManager.INSTANCE;
 		if (manager.isUUIDRegistered(player.getUniqueID())) {
