@@ -8,8 +8,6 @@ import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -35,15 +33,15 @@ public class CommandTpPlot extends CommandBase {
 
 	@Override
 	public void execute(@NotNull MinecraftServer server, @NotNull ICommandSender sender, @NotNull String[] args) throws CommandException {
-		if (!(sender instanceof EntityPlayer)) {
-			sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
-			return;
-		}
-
-		if (!CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()) || !CommonProxy.contestants.contains(((EntityPlayer) sender).getUniqueID())) {
-			sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
-			return;
-		}
+		//if (!(sender instanceof EntityPlayer)) {
+		//	sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
+		//	return;
+		//}
+//
+		//if (!CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()) || !CommonProxy.contestants.contains(((EntityPlayer) sender).getUniqueID())) {
+		//	sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
+		//	return;
+		//}
 
 		if (args.length == 0) {
 			new PlotManager(getCommandSenderAsPlayer(sender)).teleportToCenter();

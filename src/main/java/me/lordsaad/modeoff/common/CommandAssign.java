@@ -36,11 +36,11 @@ public class CommandAssign extends CommandBase {
 
 	@Override
 	public void execute(@NotNull MinecraftServer server, @NotNull ICommandSender sender, @NotNull String[] args) throws CommandException {
-		if (sender instanceof EntityPlayer)
-			if (!CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()) || !CommonProxy.contestants.contains(((EntityPlayer) sender).getUniqueID())) {
-				sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
-				return;
-			}
+		//if (sender instanceof EntityPlayer)
+		//	if (!CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()) || !CommonProxy.contestants.contains(((EntityPlayer) sender).getUniqueID())) {
+		//		sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
+		//		return;
+		//	}
 		EntityPlayer player = null;
 		if (args.length >= 1) {
 			if ((sender instanceof EntityPlayer) && CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()))
@@ -52,6 +52,7 @@ public class CommandAssign extends CommandBase {
 
 		PlotAssigningManager manager = PlotAssigningManager.INSTANCE;
 		if (manager.isUUIDRegistered(player.getUniqueID())) {
+			CommonProxy.contestants.add(player.getUniqueID());
 			sender.sendMessage(new TextComponentString(TextFormatting.RED + "The plot for '" + TextFormatting.GOLD + player.getName() + TextFormatting.RED + "' has already been registered. Do /plot_tp to teleport to it."));
 			return;
 		}

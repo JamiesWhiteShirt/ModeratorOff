@@ -51,15 +51,25 @@ public class PlotManager {
 		if (player.world.provider.getDimension() != ConfigValues.plotWorldDimensionID)
 			player.changeDimension(ConfigValues.plotWorldDimensionID);
 
+		BlockPos pos = getPlotPos(plotID);
+		if (pos == null) return;
+
+		player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 2, pos.getZ() + 0.5);
+	}
+
+	@Nullable
+	public static BlockPos getPlotPos(int plotID) {
+		if (plotID < 0) return null;
+
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(ConfigValues.x, ConfigValues.y, ConfigValues.z);
 		pos.add(ConfigValues.plotSize / 2, ConfigValues.plotSize / 2, ConfigValues.plotSize / 2);
 
 		int row = plotID / ConfigValues.gridRows;
 		int column = plotID % ConfigValues.gridColumns;
 
-		pos.move(EnumFacing.valueOf(ConfigValues.directionOfRows), row * ConfigValues.plotSize + row * ConfigValues.plotMarginWidth);
-		pos.move(EnumFacing.valueOf(ConfigValues.directionOfColumns), column * ConfigValues.plotSize + column * ConfigValues.plotMarginWidth);
-		player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 2, pos.getZ() + 0.5);
+		pos.move(EnumFacing.valueOf(ConfigValues.directionOfRows), row * ConfigValues.plotSize + row * ConfigValues.plotMarginWidth + ConfigValues.plotSize / 2);
+		pos.move(EnumFacing.valueOf(ConfigValues.directionOfColumns), column * ConfigValues.plotSize + column * ConfigValues.plotMarginWidth + ConfigValues.plotSize / 2);
+		return new BlockPos(pos);
 	}
 
 	private void initPlot() {

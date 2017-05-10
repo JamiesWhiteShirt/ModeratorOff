@@ -1,6 +1,7 @@
 package me.lordsaad.modeoff;
 
 import me.lordsaad.modeoff.common.CommandAssign;
+import me.lordsaad.modeoff.common.CommandManager;
 import me.lordsaad.modeoff.common.CommandTpPlot;
 import me.lordsaad.modeoff.common.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 )
 public class Modeoff {
 
-	public static final String MOD_ID = "assets/modeoff";
+	public static final String MOD_ID = "modeoff";
 	public static final String MOD_NAME = "Modeoff";
 	public static final String VERSION = "1.0";
 
@@ -54,5 +55,6 @@ public class Modeoff {
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandAssign());
 		event.registerServerCommand(new CommandTpPlot());
+		event.registerServerCommand(new CommandManager());
 	}
 }

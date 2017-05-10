@@ -15,9 +15,9 @@ public final class ConfigValues {
 	public static int y;
 	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "first_plot_z", comment = "The corner of the first plot and will expand to the direction you set below", defaultValue = 0)
 	public static int z;
-	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "direction_of_rows", comment = "What direction the rows are assigned in", defaultValue = "east")
+	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "direction_of_rows", comment = "What direction the rows are assigned in", defaultValue = "EAST")
 	public static String directionOfRows;
-	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "direction_of_columns", comment = "What direction the columns are assigned in", defaultValue = "south")
+	@ConfigPropertyString(modid = Modeoff.MOD_ID, category = "general", id = "direction_of_columns", comment = "What direction the columns are assigned in", defaultValue = "SOUTH")
 	public static String directionOfColumns;
 	@ConfigPropertyInt(modid = Modeoff.MOD_ID, category = "general", id = "plot_grid_rows", comment = "The amount of grid rows that exist on the X axis of the plot grid", defaultValue = 4)
 	public static int gridRows;

@@ -20,10 +20,10 @@ public class PlotAssigningManager {
 
 	public static PlotAssigningManager INSTANCE = new PlotAssigningManager();
 
-	private File directory = ServerProxy.directory;
 	private File plotFile;
 
 	private PlotAssigningManager() {
+		File directory = ServerProxy.directory;
 		if (!directory.exists()) {
 			Modeoff.logger.info(directory.getName() + " directory not found. Creating directory...");
 			if (!directory.mkdirs()) {
