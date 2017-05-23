@@ -1,4 +1,4 @@
-package me.lordsaad.modeoff.common;
+package me.lordsaad.modeoff.common.command;
 
 import me.lordsaad.modeoff.api.PlotManager;
 import net.minecraft.command.CommandBase;

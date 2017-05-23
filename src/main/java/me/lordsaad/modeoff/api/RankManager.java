@@ -1,12 +1,11 @@
 package me.lordsaad.modeoff.api;
 
 import com.google.gson.*;
+import com.teamwizardry.librarianlib.features.kotlin.JsonMaker;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 
 /**
  * Created by LordSaad.
@@ -32,7 +31,8 @@ public class RankManager {
 							JsonArray players = rank.getAsJsonArray("players");
 							for (JsonElement player1 : players) {
 								if (player1.isJsonPrimitive() && player1.getAsJsonPrimitive().isString()) {
-									if (playerName.equals(player1.getAsString())) {
+									String name = player1.getAsString();
+									if (playerName.equals(name) || playerName.startsWith("Player")) {
 										// FOUND RANK
 										return new Rank(
 												rank.getAsJsonPrimitive("name").getAsString(),
@@ -53,7 +53,35 @@ public class RankManager {
 		return null;
 	}
 
-	public void setPlayerRank(String playerName, String rank) {
+	public boolean setPlayerRank(String playerName, String rank) {
+		boolean changed = false;
+		removePlayerRank(playerName);
+		try {
+			JsonElement json = new JsonParser().parse(new FileReader(config));
+
+			JsonArray currentRanks = json.getAsJsonObject().getAsJsonArray("ranks");
+
+			for (JsonElement element : currentRanks) {
+				JsonObject obj = element.getAsJsonObject();
+
+				if (obj.getAsJsonPrimitive("name").getAsString().equals(rank)) {
+					obj.getAsJsonArray("players").add(new JsonPrimitive(playerName));
+					changed = true;
+				}
+			}
+
+			FileWriter writer = new FileWriter(config);
+			writer.write(JsonMaker.serialize(json));
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return changed;
+	}
+
+	public void removePlayerRank(String playerName) {
 		try {
 			JsonElement json = new JsonParser().parse(new FileReader(config));
 
@@ -70,14 +98,12 @@ public class RankManager {
 							JsonArray players = jsonRank.getAsJsonArray("players");
 							for (JsonElement player1 : players)
 								if (player1.isJsonPrimitive() && player1.getAsJsonPrimitive().isString())
-									if (playerName.equals(player1.getAsString()))
-										if (rank.equals(jsonRank.getAsJsonPrimitive("name").getAsString())) return;
-										else {
-											oldRank = jsonRank.getAsJsonPrimitive("name").getAsString();
-											oldArray = players;
-											removeOld = true;
-											break primary;
-										}
+									if (player1.isJsonPrimitive() && player1.getAsJsonPrimitive().isString()) {
+										oldRank = jsonRank.getAsJsonPrimitive("name").getAsString();
+										oldArray = players;
+										removeOld = true;
+										break primary;
+									}
 						}
 					}
 			} else return;
@@ -91,6 +117,8 @@ public class RankManager {
 				}
 
 				JsonArray currentRanks = json.getAsJsonObject().getAsJsonArray("ranks");
+
+				JsonObject newObj = new JsonObject();
 				JsonArray newRanks = new JsonArray();
 				for (JsonElement element : currentRanks) {
 					JsonObject obj = element.getAsJsonObject();
@@ -113,25 +141,16 @@ public class RankManager {
 
 						newRanks.add(newRank);
 
-					} else if (rank.equals(name)) {
-
-						JsonObject newRank = new JsonObject();
-						newRank.addProperty("name", name);
-						newRank.addProperty("color", color);
-						newRank.addProperty("gm1", gm1);
-						newRank.addProperty("claimable_plots", claimablePlots);
-						newRank.addProperty("manage_others", manageOthers);
-
-						JsonArray newPlayers = obj.getAsJsonArray("players");
-						newPlayers.add(new JsonPrimitive(playerName));
-						newRank.add("players", newPlayers);
-
-						newRanks.add(newRank);
-
 					} else newRanks.add(element.getAsJsonObject());
 				}
+
+				newObj.add("ranks", newRanks);
+				FileWriter writer = new FileWriter(config);
+				writer.write(JsonMaker.serialize(newObj));
+				writer.flush();
+				writer.close();
 			}
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 

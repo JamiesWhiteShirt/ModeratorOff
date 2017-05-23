@@ -49,8 +49,6 @@ public class CommonProxy {
 
 		directory = new File(configFolder, Modeoff.MOD_ID);
 
-		RankManager.INSTANCE.getClass();
-
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 
 		PacketHandler.register(PacketManagerGui.class, Side.CLIENT);
@@ -106,6 +104,8 @@ public class CommonProxy {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		initRanks(directory);
 	}
 
 	private void initRanks(File directory) {
@@ -142,7 +142,6 @@ public class CommonProxy {
 				JsonArray teamArray = new JsonArray();
 				teamArray.add(new JsonPrimitive("LordSaad"));
 				teamArray.add(new JsonPrimitive("Eladkay"));
-				teamArray.add(new JsonPrimitive("wiresegal"));
 				teamArray.add(new JsonPrimitive("escapee"));
 				teamArray.add(new JsonPrimitive("prospector"));
 				team.add("players", teamArray);

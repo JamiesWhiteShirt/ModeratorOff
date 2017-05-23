@@ -1,4 +1,4 @@
-package me.lordsaad.modeoff.common;
+package me.lordsaad.modeoff.common.command;
 
 import com.teamwizardry.librarianlib.features.network.PacketHandler;
 import me.lordsaad.modeoff.common.network.PacketManagerGui;

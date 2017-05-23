@@ -5,7 +5,6 @@ import com.teamwizardry.librarianlib.features.gui.GuiBase;
 import com.teamwizardry.librarianlib.features.gui.GuiComponent;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentSprite;
 import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid;
-import com.teamwizardry.librarianlib.features.gui.mixin.ScissorMixin;
 import com.teamwizardry.librarianlib.features.kotlin.ClientUtilMethods;
 import com.teamwizardry.librarianlib.features.sprite.Sprite;
 import com.teamwizardry.librarianlib.features.sprite.Texture;
@@ -62,19 +61,19 @@ public class GuiPlot extends GuiBase {
 
 		cache(blockAccess, pos, width, height);
 
-		ComponentSprite compBackground = new ComponentSprite(spriteBackground, 0, 0, 512, 332);
+		ComponentSprite compBackground = new ComponentSprite(spriteBackground, (512 / 2) - (332 / 2), 0, 332, 512);
 		getMainComponents().add(compBackground);
 
 		ComponentVoid boxing2 = new ComponentVoid(0, 0, 512, 256);
 		ComponentVoid sideView = new ComponentVoid(0, 0, 512, 256);
 
 		boxing2.add(sideView);
-		ScissorMixin.INSTANCE.scissor(sideView);
+		//ScissorMixin.INSTANCE.scissor(sideView);
 
 		double tileSideSize = width / 10;
 
 		sideView.BUS.hook(GuiComponent.ComponentTickEvent.class, (event) -> {
-			if (animSideRotation % 60 <= 0.1) cache(blockAccess, pos, width, height);
+			//if (animSideRotation % 60 <= 0.1) cache(blockAccess, pos, width, height);
 
 			if (animSideRotation >= 360) animSideRotation = 0;
 
@@ -101,11 +100,12 @@ public class GuiPlot extends GuiBase {
 			int horizontalAngle = 40;
 			int verticalAngle = 45;
 
+			GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+			GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
 			GlStateManager.pushMatrix();
 			GlStateManager.enableCull();
 
-			GlStateManager.matrixMode(GL11.GL_MODELVIEW);
-			GlStateManager.shadeModel(GL11.GL_SMOOTH);
 			GlStateManager.translate(256 - (width / 2), 128 - (height / 2), 5000);
 			GlStateManager.rotate(horizontalAngle * (animSideTickPassed / animTickMax), -1, 0, 0);
 			GlStateManager.rotate(animSideRotation * 10, 0, 1, 0);

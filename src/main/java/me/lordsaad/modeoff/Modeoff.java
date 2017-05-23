@@ -1,9 +1,10 @@
 package me.lordsaad.modeoff;
 
-import me.lordsaad.modeoff.common.CommandAssign;
-import me.lordsaad.modeoff.common.CommandManager;
-import me.lordsaad.modeoff.common.CommandTpPlot;
 import me.lordsaad.modeoff.common.CommonProxy;
+import me.lordsaad.modeoff.common.command.CommandAssign;
+import me.lordsaad.modeoff.common.command.CommandManager;
+import me.lordsaad.modeoff.common.command.CommandRank;
+import me.lordsaad.modeoff.common.command.CommandTpPlot;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -56,5 +57,6 @@ public class Modeoff {
 		event.registerServerCommand(new CommandAssign());
 		event.registerServerCommand(new CommandTpPlot());
 		event.registerServerCommand(new CommandManager());
+		event.registerServerCommand(new CommandRank());
 	}
 }
