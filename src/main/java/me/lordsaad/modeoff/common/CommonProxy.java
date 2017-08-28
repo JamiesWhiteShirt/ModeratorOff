@@ -18,8 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.awt.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -64,7 +63,7 @@ public class CommonProxy {
 			{
 				String urlString = ConfigValues.urlContestants;
 				URL url = new URL(urlString);
-				HttpURLConnection request = (HttpURLConnection) url.openConnection();
+				URLConnection request = url.openConnection();
 				request.connect();
 				JsonParser parser = new JsonParser();
 				JsonElement root = parser.parse(new InputStreamReader((InputStream) request.getContent()));
@@ -84,7 +83,7 @@ public class CommonProxy {
 			{
 				String urlString = ConfigValues.urlTeam;
 				URL url = new URL(urlString);
-				HttpURLConnection request = (HttpURLConnection) url.openConnection();
+				URLConnection request = url.openConnection();
 				request.connect();
 				JsonParser parser = new JsonParser();
 				JsonElement root = parser.parse(new InputStreamReader((InputStream) request.getContent()));
@@ -101,7 +100,7 @@ public class CommonProxy {
 				}
 			}
 			Modeoff.logger.info("Finished downloading lists!");
-		} catch (IOException | JsonParseException e) {
+		} catch (IOException | JsonParseException | IllegalStateException e) {
 			e.printStackTrace();
 		}
 
