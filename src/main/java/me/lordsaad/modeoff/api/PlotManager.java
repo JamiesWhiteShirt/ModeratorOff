@@ -36,7 +36,7 @@ public class PlotManager {
 
 		UUID uuid = PlotAssigningManager.INSTANCE.getUUIDForPlot(plotID);
 		if (uuid == null) {
-			Modeoff.logger.error("uuid for plot " + plotID + " could not be found.");
+			Modeoff.INSTANCE.getLogger().error("uuid for plot " + plotID + " could not be found.");
 			return;
 		}
 		this.uuid = uuid;

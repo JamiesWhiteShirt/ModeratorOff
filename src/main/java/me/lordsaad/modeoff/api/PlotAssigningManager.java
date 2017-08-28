@@ -25,20 +25,20 @@ public class PlotAssigningManager {
 	private PlotAssigningManager() {
 		File directory = ServerProxy.directory;
 		if (!directory.exists()) {
-			Modeoff.logger.info(directory.getName() + " directory not found. Creating directory...");
+			Modeoff.INSTANCE.getLogger().info(directory.getName() + " directory not found. Creating directory...");
 			if (!directory.mkdirs()) {
-				Modeoff.logger.fatal("SOMETHING WENT WRONG! Could not create config directory " + directory.getName());
+				Modeoff.INSTANCE.getLogger().fatal("SOMETHING WENT WRONG! Could not create config directory " + directory.getName());
 				return;
 			}
-			Modeoff.logger.info(directory.getName() + " directory has been created successfully!");
+			Modeoff.INSTANCE.getLogger().info(directory.getName() + " directory has been created successfully!");
 		}
 
 		File plotFile = new File(directory, "registered_plots.json");
 		try {
 			if (!plotFile.exists()) {
-				Modeoff.logger.info(plotFile.getName() + " file not found. Creating file...");
+				Modeoff.INSTANCE.getLogger().info(plotFile.getName() + " file not found. Creating file...");
 				if (!plotFile.createNewFile()) {
-					Modeoff.logger.fatal("SOMETHING WENT WRONG! Could not create config file " + plotFile.getName());
+					Modeoff.INSTANCE.getLogger().fatal("SOMETHING WENT WRONG! Could not create config file " + plotFile.getName());
 					return;
 				}
 
@@ -49,7 +49,7 @@ public class PlotAssigningManager {
 				writer.write(JsonMaker.serialize(obj));
 				writer.flush();
 				writer.close();
-				Modeoff.logger.info(plotFile.getName() + " file has been created successfully!");
+				Modeoff.INSTANCE.getLogger().info(plotFile.getName() + " file has been created successfully!");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -124,7 +124,7 @@ public class PlotAssigningManager {
 					writer.write(JsonMaker.serialize(obj));
 					writer.flush();
 					writer.close();
-					Modeoff.logger.info("registered plot " + plotID + " to uuid '" + uuid.toString() + "' successfully!");
+					Modeoff.INSTANCE.getLogger().info("registered plot " + plotID + " to uuid '" + uuid.toString() + "' successfully!");
 
 					return true;
 				} catch (IOException e) {

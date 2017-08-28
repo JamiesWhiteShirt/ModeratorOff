@@ -38,12 +38,12 @@ public class CommonProxy {
 		File configFolder = event.getModConfigurationDirectory();
 
 		if (!configFolder.exists()) {
-			Modeoff.logger.info(configFolder.getName() + " not found. Creating directory...");
+			Modeoff.INSTANCE.getLogger().info(configFolder.getName() + " not found. Creating directory...");
 			if (!configFolder.mkdirs()) {
-				Modeoff.logger.error("SOMETHING WENT WRONG! Could not create config directory " + configFolder.getName());
+				Modeoff.INSTANCE.getLogger().error("SOMETHING WENT WRONG! Could not create config directory " + configFolder.getName());
 				return;
 			}
-			Modeoff.logger.info(configFolder.getName() + " has been created successfully!");
+			Modeoff.INSTANCE.getLogger().info(configFolder.getName() + " has been created successfully!");
 		}
 
 		directory = new File(configFolder, Modeoff.MOD_ID);
@@ -54,12 +54,12 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
-		NetworkRegistry.INSTANCE.registerGuiHandler(Modeoff.instance, new GuiHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(Modeoff.INSTANCE, new GuiHandler());
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
 		try {
-			Modeoff.logger.info("Downloading list of team members and contestants...");
+			Modeoff.INSTANCE.getLogger().info("Downloading list of team members and contestants...");
 			{
 				String urlString = ConfigValues.urlContestants;
 				URL url = new URL(urlString);
@@ -99,7 +99,7 @@ public class CommonProxy {
 					}
 				}
 			}
-			Modeoff.logger.info("Finished downloading lists!");
+			Modeoff.INSTANCE.getLogger().info("Finished downloading lists!");
 		} catch (IOException | JsonParseException | IllegalStateException e) {
 			e.printStackTrace();
 		}
@@ -110,21 +110,21 @@ public class CommonProxy {
 	private void initRanks(File directory) {
 		File ranksFolder = new File(directory, "ranks");
 		if (!ranksFolder.exists()) {
-			Modeoff.logger.info(ranksFolder.getName() + " not found. Creating directory...");
+			Modeoff.INSTANCE.getLogger().info(ranksFolder.getName() + " not found. Creating directory...");
 			if (!ranksFolder.mkdirs()) {
-				Modeoff.logger.error("SOMETHING WENT WRONG! Could not create config directory " + ranksFolder.getName());
+				Modeoff.INSTANCE.getLogger().error("SOMETHING WENT WRONG! Could not create config directory " + ranksFolder.getName());
 				return;
 			}
-			Modeoff.logger.info(ranksFolder.getName() + " has been created successfully!");
+			Modeoff.INSTANCE.getLogger().info(ranksFolder.getName() + " has been created successfully!");
 		}
 		RankManager.INSTANCE.directory = ranksFolder;
 
 		File rankConfig = new File(ranksFolder, "ranks_config");
 		try {
 			if (!rankConfig.exists()) {
-				Modeoff.logger.info(rankConfig.getName() + " file not found. Creating file...");
+				Modeoff.INSTANCE.getLogger().info(rankConfig.getName() + " file not found. Creating file...");
 				if (!rankConfig.createNewFile()) {
-					Modeoff.logger.fatal("SOMETHING WENT WRONG! Could not create config file " + rankConfig.getName());
+					Modeoff.INSTANCE.getLogger().fatal("SOMETHING WENT WRONG! Could not create config file " + rankConfig.getName());
 					return;
 				}
 
@@ -161,7 +161,7 @@ public class CommonProxy {
 				writer.write(JsonMaker.serialize(base));
 				writer.flush();
 				writer.close();
-				Modeoff.logger.info(rankConfig.getName() + " file has been created successfully!");
+				Modeoff.INSTANCE.getLogger().info(rankConfig.getName() + " file has been created successfully!");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -8,10 +8,12 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "kotlin"
 
 
 sourceCompatibility = 1.8
@@ -42,6 +44,8 @@ repositories {
 
 dependencies {
 	compile "com.teamwizardry.librarianlib:librarianlib-1.12:4.0-SNAPSHOT:deobf"
+    compile "net.shadowfacts:Forgelin:1.5.1"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 }
 
 processResources {

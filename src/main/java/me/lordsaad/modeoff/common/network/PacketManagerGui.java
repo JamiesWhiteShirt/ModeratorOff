@@ -20,7 +20,7 @@ public class PacketManagerGui extends PacketBase {
 	public void handle(MessageContext messageContext) {
 		BlockPos pos = PlotManager.getPlotPos(PlotAssigningManager.INSTANCE.getPlotForUUID(Minecraft.getMinecraft().player.getUniqueID()));
 		if (pos == null) return;
-		Minecraft.getMinecraft().player.openGui(Modeoff.instance, 0, Minecraft.getMinecraft().player.world, pos.getX(), pos.getY(), pos.getZ());
+		Minecraft.getMinecraft().player.openGui(Modeoff.INSTANCE, 0, Minecraft.getMinecraft().player.world, pos.getX(), pos.getY(), pos.getZ());
 
 	}
 }
