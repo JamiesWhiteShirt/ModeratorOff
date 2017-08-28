@@ -21,6 +21,32 @@ import java.io.*
 import java.net.*
 import java.util.UUID
 
+private fun readUUIDSetFromURL(urlString: String): Set<UUID> {
+    try {
+        val url = URL(urlString)
+        val request = url.openConnection()
+        request.connect()
+        val parser = JsonParser()
+        val root = parser.parse(InputStreamReader(request.content as InputStream))
+        return root.takeIf { it.isJsonObject }?.let { root ->
+            root.asJsonObject.get("list")?.takeIf { it.isJsonArray }?.let { list ->
+                list.asJsonArray
+                    .filter { it.isJsonObject }
+                    .mapNotNull { it.asJsonObject.get("uuid") }
+                    .map { UUID.fromString(it.asString) }
+                    .toSet()
+            }
+        } ?: throw Exception("Malformed JSON")
+    } catch (e: IOException) {
+        e.printStackTrace()
+    } catch (e: JsonParseException) {
+        e.printStackTrace()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return emptySet()
+}
+
 /**
  * Created by LordSaad.
  */
@@ -55,51 +81,10 @@ open class CommonProxy {
     }
 
     open fun postInit(event: FMLPostInitializationEvent) {
-        try {
-            Modeoff.logger.info("Downloading list of team members and contestants...")
-            run {
-                val urlString = ConfigValues.urlContestants
-                val url = URL(urlString)
-                val request = url.openConnection()
-                request.connect()
-                val parser = JsonParser()
-                val root = parser.parse(InputStreamReader(request.content as InputStream))
-                val base = root.asJsonObject
-                if (base.has("list") && base.get("list").isJsonArray) {
-                    val arrayContestants = base.asJsonArray
-                    teamMembers = arrayContestants
-                        .filter { it.isJsonObject }
-                        .mapNotNull { it.asJsonObject.get("uuid") }
-                        .map { UUID.fromString(it.asString) }
-                        .toSet()
-                }
-            }
-
-            run {
-                val urlString = ConfigValues.urlTeam
-                val url = URL(urlString)
-                val request = url.openConnection()
-                request.connect()
-                val parser = JsonParser()
-                val root = parser.parse(InputStreamReader(request.content as InputStream))
-                val base = root.asJsonObject
-                if (base.has("list") && base.get("list").isJsonArray) {
-                    val arrayContestants = base.asJsonArray
-                    contestants = arrayContestants
-                        .filter { it.isJsonObject }
-                        .mapNotNull { it.asJsonObject.get("uuid") }
-                        .map { UUID.fromString(it.asString) }
-                        .toHashSet()
-                }
-            }
-            Modeoff.logger.info("Finished downloading lists!")
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: JsonParseException) {
-            e.printStackTrace()
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-        }
+        Modeoff.logger.info("Downloading list of team members and contestants...")
+        contestants = readUUIDSetFromURL(ConfigValues.urlContestants).toHashSet()
+        teamMembers = readUUIDSetFromURL(ConfigValues.urlTeam).toHashSet()
+        Modeoff.logger.info("Finished downloading lists!")
 
         initRanks(directory)
     }
