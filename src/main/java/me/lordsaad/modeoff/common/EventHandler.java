@@ -1,5 +1,6 @@
 package me.lordsaad.modeoff.common;
 
+import me.lordsaad.modeoff.Modeoff;
 import me.lordsaad.modeoff.api.PlotManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -15,8 +16,8 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-		if (CommonProxy.teamMembers.contains(event.getEntityPlayer().getUniqueID())) return;
-		if (!CommonProxy.contestants.contains(event.getEntityPlayer().getUniqueID())) {
+		if (Modeoff.INSTANCE.getProxy().getTeamMembers().contains(event.getEntityPlayer().getUniqueID())) return;
+		if (!Modeoff.INSTANCE.getProxy().getContestants().contains(event.getEntityPlayer().getUniqueID())) {
 			event.setUseItem(Event.Result.DENY);
 			event.setUseBlock(Event.Result.DENY);
 			event.setCanceled(true);
@@ -41,8 +42,8 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void onBreakBlock(BlockEvent.BreakEvent event) {
-		if (CommonProxy.teamMembers.contains(event.getPlayer().getUniqueID())) return;
-		if (!CommonProxy.contestants.contains(event.getPlayer().getUniqueID())) {
+		if (Modeoff.INSTANCE.getProxy().getTeamMembers().contains(event.getPlayer().getUniqueID())) return;
+		if (!Modeoff.INSTANCE.getProxy().getContestants().contains(event.getPlayer().getUniqueID())) {
 			event.setCanceled(true);
 			return;
 		}
@@ -62,8 +63,8 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void breakSpeed(PlayerEvent.BreakSpeed event) {
-		if (CommonProxy.teamMembers.contains(event.getEntityPlayer().getUniqueID())) return;
-		if (!CommonProxy.contestants.contains(event.getEntityPlayer().getUniqueID())) {
+		if (Modeoff.INSTANCE.getProxy().getTeamMembers().contains(event.getEntityPlayer().getUniqueID())) return;
+		if (!Modeoff.INSTANCE.getProxy().getContestants().contains(event.getEntityPlayer().getUniqueID())) {
 			event.setCanceled(true);
 			return;
 		}
@@ -82,8 +83,8 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void place(BlockEvent.PlaceEvent event) {
-		if (CommonProxy.teamMembers.contains(event.getPlayer().getUniqueID())) return;
-		if (!CommonProxy.contestants.contains(event.getPlayer().getUniqueID())) {
+		if (Modeoff.INSTANCE.getProxy().getTeamMembers().contains(event.getPlayer().getUniqueID())) return;
+		if (!Modeoff.INSTANCE.getProxy().getContestants().contains(event.getPlayer().getUniqueID())) {
 			event.setCanceled(true);
 			return;
 		}

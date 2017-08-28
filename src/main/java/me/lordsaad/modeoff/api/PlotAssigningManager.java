@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.teamwizardry.librarianlib.features.kotlin.JsonMaker;
 import me.lordsaad.modeoff.Modeoff;
-import me.lordsaad.modeoff.server.ServerProxy;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
@@ -23,7 +22,7 @@ public class PlotAssigningManager {
 	private File plotFile;
 
 	private PlotAssigningManager() {
-		File directory = ServerProxy.directory;
+		File directory = Modeoff.INSTANCE.getProxy().getDirectory();
 		if (!directory.exists()) {
 			Modeoff.INSTANCE.getLogger().info(directory.getName() + " directory not found. Creating directory...");
 			if (!directory.mkdirs()) {

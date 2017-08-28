@@ -1,8 +1,8 @@
 package me.lordsaad.modeoff.common.command;
 
+import me.lordsaad.modeoff.Modeoff;
 import me.lordsaad.modeoff.api.PlotAssigningManager;
 import me.lordsaad.modeoff.api.PlotManager;
-import me.lordsaad.modeoff.common.CommonProxy;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -44,7 +44,7 @@ public class CommandAssign extends CommandBase {
 		//	}
 		EntityPlayer player = null;
 		if (args.length >= 1) {
-			if ((sender instanceof EntityPlayer) && CommonProxy.teamMembers.contains(((EntityPlayer) sender).getUniqueID()))
+			if ((sender instanceof EntityPlayer) && Modeoff.INSTANCE.getProxy().getTeamMembers().contains(((EntityPlayer) sender).getUniqueID()))
 				player = getPlayer(server, sender, args[0]);
 		} else if (sender instanceof EntityPlayer) player = getCommandSenderAsPlayer(sender);
 		else throw new WrongUsageException(getUsage(sender));
@@ -53,7 +53,7 @@ public class CommandAssign extends CommandBase {
 
 		PlotAssigningManager manager = PlotAssigningManager.INSTANCE;
 		if (manager.isUUIDRegistered(player.getUniqueID())) {
-			CommonProxy.contestants.add(player.getUniqueID());
+			Modeoff.INSTANCE.getProxy().getContestants().add(player.getUniqueID());
 			sender.sendMessage(new TextComponentString(TextFormatting.RED + "The plot for '" + TextFormatting.GOLD + player.getName() + TextFormatting.RED + "' has already been registered. Do /plot_tp to teleport to it."));
 			return;
 		}
