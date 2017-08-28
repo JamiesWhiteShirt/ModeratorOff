@@ -18,7 +18,7 @@ class PlotManagerServer(server: MinecraftServer, layout: PlotLayout) : PlotManag
         Modeoff.messageHandler.sendTo(MessagePlotLayout(layout), player)
     }
 
-    private val plotFile = server.getFile("registered_plots.json")
+    private val plotFile = server.activeAnvilConverter.getFile(server.folderName, "registered_plots.json")
 
     init {
         try {
