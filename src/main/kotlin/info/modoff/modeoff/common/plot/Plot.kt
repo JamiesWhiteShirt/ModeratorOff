@@ -8,21 +8,9 @@ import net.minecraft.util.math.BlockPos
 /**
  * Created by LordSaad.
  */
-class Plot {
+class Plot(plotId: Int) {
     companion object {
-        fun teleportToPlot(player: EntityPlayer?, plotID: Int) {
-            if (plotID < 0) return
-            if (player == null) return
-
-            if (player.world.provider.dimension != ConfigValues.plotWorldDimensionID)
-                player.changeDimension(ConfigValues.plotWorldDimensionID)
-
-            val pos = getPlotPos(plotID) ?: return
-
-            player.setPositionAndUpdate(pos.x + 0.5, (pos.y + 2).toDouble(), pos.z + 0.5)
-        }
-
-        fun getPlotPos(plotID: Int): BlockPos? {
+        private fun getPlotPos(plotID: Int): BlockPos? {
             if (plotID < 0) return null
 
             val pos = BlockPos.MutableBlockPos(ConfigValues.firstPlotX, ConfigValues.firstPlotY, ConfigValues.firstPlotZ)
@@ -38,19 +26,15 @@ class Plot {
     }
 
 
-    val plotID: Int
+    val plotID: Int = plotId
     val corner1: BlockPos
     val corner2: BlockPos
 
-    constructor(plotId: Int) {
-        this.plotID = plotId
-
+    init {
         val pos = BlockPos.MutableBlockPos(ConfigValues.firstPlotX, ConfigValues.firstPlotY, ConfigValues.firstPlotZ)
         pos.add(ConfigValues.plotSize / 2, ConfigValues.plotSize / 2, ConfigValues.plotSize / 2)
-
         val row = plotID / ConfigValues.plotGridRows
         val column = plotID % ConfigValues.plotGridColumns
-
         pos.move(EnumFacing.valueOf(ConfigValues.directionOfRows), row * ConfigValues.plotSize + row * ConfigValues.plotMarginWidth)
         pos.move(EnumFacing.valueOf(ConfigValues.directionOfColumns), column * ConfigValues.plotSize + column * ConfigValues.plotMarginWidth)
         corner1 = BlockPos(pos.x - ConfigValues.plotSize / 2, pos.y, pos.z - ConfigValues.plotSize / 2)
@@ -58,6 +42,11 @@ class Plot {
     }
 
     fun teleportPlayerToCenter(player: EntityPlayer) {
-        teleportToPlot(player, plotID)
+        if (player.world.provider.dimension != ConfigValues.plotWorldDimensionID)
+            player.changeDimension(ConfigValues.plotWorldDimensionID)
+
+        val pos = getPlotPos(plotID) ?: return
+
+        player.setPositionAndUpdate(pos.x + 0.5, (pos.y + 2).toDouble(), pos.z + 0.5)
     }
 }
