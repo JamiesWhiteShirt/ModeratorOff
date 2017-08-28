@@ -27,7 +27,7 @@ import java.util.UUID
 open class CommonProxy {
     lateinit var directory: File
     lateinit var teamMembers: Set<UUID>
-    lateinit var contestants: Set<UUID>
+    lateinit var contestants: MutableSet<UUID>
 
     open fun preInit(event: FMLPreInitializationEvent) {
         EasyConfigHandler.init()
@@ -89,7 +89,7 @@ open class CommonProxy {
                         .filter { it.isJsonObject }
                         .mapNotNull { it.asJsonObject.get("uuid") }
                         .map { UUID.fromString(it.asString) }
-                        .toSet()
+                        .toHashSet()
                 }
             }
             Modeoff.logger.info("Finished downloading lists!")
