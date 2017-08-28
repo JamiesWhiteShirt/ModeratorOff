@@ -1,6 +1,7 @@
 package info.modoff.modeoff.client.network.handler
 
 import info.modoff.modeoff.client.ClientProxy
+import info.modoff.modeoff.client.plot.PlotManagerClient
 import info.modoff.modeoff.common.network.message.MessagePlotLayout
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
@@ -19,6 +20,6 @@ class MessagePlotLayoutHandler(val proxy: ClientProxy) : IMessageHandler<Message
     }
 
     private fun process(message: MessagePlotLayout) {
-        proxy.clientPlotLayout = message.plotLayout
+        proxy.plotManagerClient = PlotManagerClient(message.plotLayout!!)
     }
 }

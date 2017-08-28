@@ -1,18 +1,17 @@
 package info.modoff.modeoff.common.command
 
-import com.teamwizardry.librarianlib.features.network.PacketHandler
-import info.modoff.modeoff.common.network.PacketManagerGui
+import info.modoff.modeoff.Modeoff
+import info.modoff.modeoff.common.gui.ContainerManagePlot
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
 import net.minecraft.command.WrongUsageException
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.server.MinecraftServer
 
 /**
  * Created by LordSaad.
  */
-class CommandManager : CommandBase() {
+class CommandManagePlot : CommandBase() {
     override fun getName() = "plot_manager"
 
     override fun getUsage(sender: ICommandSender) = "commands.modeoff.plot_manager.usage"
@@ -27,6 +26,7 @@ class CommandManager : CommandBase() {
         if (args.isNotEmpty()) throw WrongUsageException(getUsage(sender))
 
         val player = getCommandSenderAsPlayer(sender)
-        PacketHandler.NETWORK.sendTo(PacketManagerGui(), player as EntityPlayerMP)
+        val pos = player.position
+        player.openGui(Modeoff, ContainerManagePlot.ID, player.world, pos.x, pos.y, pos.z)
     }
 }

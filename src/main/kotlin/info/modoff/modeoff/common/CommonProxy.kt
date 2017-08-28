@@ -8,7 +8,7 @@ import info.modoff.modeoff.Modeoff
 import info.modoff.modeoff.api.ConfigValues
 import info.modoff.modeoff.api.RankManager
 import info.modoff.modeoff.common.gui.GuiHandler
-import info.modoff.modeoff.common.network.PacketManagerGui
+import info.modoff.modeoff.common.plot.PlotManager
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
@@ -73,8 +73,6 @@ abstract class CommonProxy {
         directory = File(configFolder, Modeoff.MOD_ID)
 
         MinecraftForge.EVENT_BUS.register(EventHandler())
-
-        PacketHandler.register(PacketManagerGui::class.java, Side.CLIENT)
     }
 
     open fun init(event: FMLInitializationEvent) {
@@ -154,4 +152,6 @@ abstract class CommonProxy {
     }
 
     abstract fun registerMessages(messageHandler: SimpleNetworkWrapper)
+
+    abstract fun getPlotManager(side: Side): PlotManager?
 }

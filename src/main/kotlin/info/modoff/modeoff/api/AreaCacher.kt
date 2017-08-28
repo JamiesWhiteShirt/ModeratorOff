@@ -7,6 +7,7 @@ import net.minecraft.util.BlockRenderLayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3i
+import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
 import java.util.EnumMap
@@ -19,7 +20,7 @@ import java.util.EnumMap
  * @param width  The width of the crane.
  * @param height The height of the crane.
  */
-class AreaCacher(world: World, origin: BlockPos, width: Int, height: Int) {
+class AreaCacher(world: IBlockAccess, origin: BlockPos, width: Int, height: Int) {
     val blocks = EnumMap<BlockRenderLayer, HashMultimap<IBlockState, BlockPos>>(BlockRenderLayer::class.java)
 
     init {
@@ -49,11 +50,7 @@ class AreaCacher(world: World, origin: BlockPos, width: Int, height: Int) {
                     val z = origin.z + zIndex - width
                     val pos = BlockPos(x, y, z)
 
-                    if (world.isBlockLoaded(pos)) {
-                        world.getBlockState(pos)
-                    } else {
-                        air
-                    }
+                    world.getBlockState(pos)
                 }
             }
         }

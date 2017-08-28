@@ -1,7 +1,7 @@
 package info.modoff.modeoff.common.command
 
-import info.modoff.modeoff.api.PlotAssigningManager
-import info.modoff.modeoff.api.PlotManager
+import info.modoff.modeoff.api.Plot
+import info.modoff.modeoff.common.plot.PlotManagerServer
 import net.minecraft.command.*
 import net.minecraft.server.MinecraftServer
 import net.minecraft.util.math.BlockPos
@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos
 /**
  * Created by LordSaad.
  */
-class CommandTpPlot : CommandBase() {
+class CommandTpPlot(val plotManager: PlotManagerServer) : CommandBase() {
 
     override fun getName() = "plot_tp"
 
@@ -30,30 +30,29 @@ class CommandTpPlot : CommandBase() {
         when (args.size) {
             0 -> {
                 val player = getCommandSenderAsPlayer(sender)
-                PlotManager(player).teleportPlayerToCenter(player)
+                plotManager.getPlotByAssignedUUID(player.uniqueID)?.teleportPlayerToCenter(player)
             }
             1 -> {
-                val (plot) = args
-                val plotManager = getPlotManagerByPlotIdOrPlayer(server, sender, plot)
-                PlotManager.teleportToPlot(getCommandSenderAsPlayer(sender), plotManager.plotID)
+                val (plotIdOrPlayer) = args
+                getPlotByIdOrAssignedPlayer(server, sender, plotIdOrPlayer)?.teleportPlayerToCenter(getCommandSenderAsPlayer(sender))
             }
             2 -> {
-                val (player, plot) = args
-                val targetPlayer = getPlayer(server, sender, player)
-                val plotManager = getPlotManagerByPlotIdOrPlayer(server, sender, plot)
+                val (playerName, plotIdOrPlayer) = args
+                val player = getPlayer(server, sender, playerName)
 
-                PlotManager.teleportToPlot(targetPlayer, plotManager.plotID)
+                getPlotByIdOrAssignedPlayer(server, sender, plotIdOrPlayer)?.teleportPlayerToCenter(player)
             }
             else -> throw WrongUsageException(getUsage(sender))
         }
     }
 
-    private fun getPlotManagerByPlotIdOrPlayer(server: MinecraftServer, sender: ICommandSender, plotIdOrPlayer: String): PlotManager {
+    private fun getPlotByIdOrAssignedPlayer(server: MinecraftServer, sender: ICommandSender, idOrPlayer: String): Plot? {
         return try {
-            val plotID = Integer.parseInt(plotIdOrPlayer)
-            PlotManager(PlotAssigningManager.getUUIDForPlot(plotID)!!, plotID)
+            val plotID = Integer.parseInt(idOrPlayer)
+            Plot(plotID)
         } catch (e: NumberFormatException) {
-            PlotManager(getPlayer(server, sender, plotIdOrPlayer))
+            val player = getPlayer(server, sender, idOrPlayer)
+            plotManager.getPlotByAssignedUUID(player.uniqueID)
         }
     }
 

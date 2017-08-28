@@ -1,4 +1,4 @@
-package info.modoff.modeoff.api
+package info.modoff.modeoff.common.plot
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
@@ -6,28 +6,21 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.teamwizardry.librarianlib.features.kotlin.serialize
 import info.modoff.modeoff.Modeoff
-
+import info.modoff.modeoff.api.Plot
+import info.modoff.modeoff.common.network.message.MessagePlotLayout
+import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.server.MinecraftServer
 import java.io.*
-import java.util.ArrayList
-import java.util.UUID
+import java.util.*
 
-/**
- * Created by LordSaad.
- */
-object PlotAssigningManager {
-    private val plotFile: File
+class PlotManagerServer(server: MinecraftServer, layout: PlotLayout) : PlotManager(layout) {
+    fun sendToPlayer(player: EntityPlayerMP) {
+        Modeoff.messageHandler.sendTo(MessagePlotLayout(layout), player)
+    }
+
+    private val plotFile = server.getFile("registered_plots.json")
 
     init {
-        val directory = Modeoff.proxy.directory
-        if (!directory.exists()) {
-            Modeoff.logger.info(directory.name + " directory not found. Creating directory...")
-            if (!directory.mkdirs()) {
-                Modeoff.logger.fatal("SOMETHING WENT WRONG! Could not create config directory " + directory.name)
-            }
-            Modeoff.logger.info(directory.name + " directory has been created successfully!")
-        }
-
-        val plotFile = File(directory, "registered_plots.json")
         try {
             if (!plotFile.exists()) {
                 Modeoff.logger.info(plotFile.name + " file not found. Creating file...")
@@ -47,14 +40,11 @@ object PlotAssigningManager {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
-        this.plotFile = plotFile
     }
 
     fun isUUIDRegistered(uuid: UUID): Boolean {
-        val json: JsonElement
         try {
-            json = JsonParser().parse(FileReader(plotFile))
+            val json = JsonParser().parse(FileReader(plotFile))
             if (json.isJsonObject && json.asJsonObject.has("plots") && json.asJsonObject.get("plots").isJsonArray) {
                 val array = json.asJsonObject.getAsJsonArray("plots")
                 array
@@ -133,7 +123,7 @@ object PlotAssigningManager {
         return false
     }
 
-    fun getPlotForUUID(playerUuid: UUID): Int {
+    override fun getPlotByAssignedUUID(playerUuid: UUID): Plot? {
         try {
             val json = JsonParser().parse(FileReader(plotFile))
             (json as? JsonObject)?.let {
@@ -144,7 +134,7 @@ object PlotAssigningManager {
                         val uuid = it["uuid"]
                         if (id != null && uuid != null) {
                             if (UUID.fromString(uuid.asString) == playerUuid) {
-                                return id.asInt
+                                return Plot(id.asInt)
                             }
                         }
                     }
@@ -153,7 +143,7 @@ object PlotAssigningManager {
             e.printStackTrace()
         }
 
-        return -1
+        return null
     }
 
     fun getUUIDForPlot(plotId: Int): UUID? {

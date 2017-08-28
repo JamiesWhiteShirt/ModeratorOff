@@ -33,7 +33,7 @@ import java.util.EnumMap
 /**
  * Created by LordSaad.
  */
-class GuiPlot(pos: BlockPos) : GuiBase(512, 512) {
+class GuiManagePlot(pos: BlockPos) : GuiBase(512, 512) {
     companion object {
         private val textureBackground = Texture(ResourceLocation(Modeoff.MOD_ID, "textures/gui/plot_gui.png"))
         private val spriteBackground = textureBackground.getSprite("bg", 166, 256)
@@ -55,7 +55,7 @@ class GuiPlot(pos: BlockPos) : GuiBase(512, 512) {
         val width = ConfigValues.plotSize + ConfigValues.plotMarginWidth
         val height = 64
 
-        val blockAccess = PlotChunkCache(mc.world, pos.add(-width, -height, -width), pos.add(width, height, width), 0)
+        val blockAccess = PlotChunkCache(Minecraft.getMinecraft().world, pos.add(-width, -height, -width), pos.add(width, height, width), 0)
 
         cache(blockAccess, pos, width, height)
 
@@ -135,7 +135,7 @@ class GuiPlot(pos: BlockPos) : GuiBase(512, 512) {
 
     fun cache(blockAccess: IBlockAccess, pos: BlockPos, width: Int, height: Int) {
         blocks.clear()
-        areaCacher = AreaCacher(mc.world, pos, width, height)
+        areaCacher = AreaCacher(blockAccess, pos, width, height)
         blocks.putAll(areaCacher!!.blocks)
         vboCaches.clear()
 

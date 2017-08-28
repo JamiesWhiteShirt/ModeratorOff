@@ -1,8 +1,8 @@
 package info.modoff.modeoff.common.command
 
 import info.modoff.modeoff.Modeoff
-import info.modoff.modeoff.api.PlotAssigningManager
-import info.modoff.modeoff.api.PlotManager
+import info.modoff.modeoff.api.Plot
+import info.modoff.modeoff.common.plot.PlotManagerServer
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation
 /**
  * Created by LordSaad.
  */
-class CommandAssign : CommandBase() {
+class CommandAssign(val plotManager: PlotManagerServer) : CommandBase() {
     override fun getName() = "plot_assign"
 
     override fun getUsage(sender: ICommandSender) = "commands.modeoff.plot_assign.usage"
@@ -39,17 +39,17 @@ class CommandAssign : CommandBase() {
                 else -> throw WrongUsageException(getUsage(sender))
             }
 
-            if (PlotAssigningManager.isUUIDRegistered(player.uniqueID)) {
+            if (plotManager.isUUIDRegistered(player.uniqueID)) {
                 // TODO: Why does this modify the contestants set?
                 Modeoff.proxy.contestants.add(player.uniqueID)
                 sender.sendMessage(TextComponentTranslation("commands.modeoff.plot_assign.alreadyAssigned", player.name))
             } else {
-                PlotAssigningManager.saveUUIDToPlot(player.uniqueID, PlotAssigningManager.nextAvailableID)
-                val plotManager = PlotManager(player)
-                sender.sendMessage(TextComponentTranslation("commands.modeoff.plot_assign.success", player.name, plotManager.plotID))
+                plotManager.saveUUIDToPlot(player.uniqueID, plotManager.nextAvailableID)
+                val plot = plotManager.getPlotByAssignedUUID(player.uniqueID)!!
+                sender.sendMessage(TextComponentTranslation("commands.modeoff.plot_assign.success", player.name, plot.plotID))
 
-                plotManager.teleportPlayerToCenter(player)
-                player.sendMessage(TextComponentTranslation("chat.type.modeoff.assignedPlot", plotManager.plotID))
+                plot.teleportPlayerToCenter(player)
+                player.sendMessage(TextComponentTranslation("chat.type.modeoff.assignedPlot", plot.plotID))
             }
         }
     }

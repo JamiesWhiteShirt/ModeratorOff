@@ -1,6 +1,6 @@
 package info.modoff.modeoff.common.network.message
 
-import info.modoff.modeoff.common.PlotLayout
+import info.modoff.modeoff.common.plot.PlotLayout
 import io.netty.buffer.ByteBuf
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage
 

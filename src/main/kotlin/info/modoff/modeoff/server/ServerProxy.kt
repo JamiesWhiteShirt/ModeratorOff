@@ -1,8 +1,10 @@
 package info.modoff.modeoff.server
 
+import info.modoff.modeoff.Modeoff
 import info.modoff.modeoff.common.CommonProxy
 import info.modoff.modeoff.common.network.handler.DummyMessageHandler
 import info.modoff.modeoff.common.network.message.MessagePlotLayout
+import info.modoff.modeoff.common.plot.PlotManager
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -27,5 +29,12 @@ class ServerProxy : CommonProxy() {
 
     override fun registerMessages(messageHandler: SimpleNetworkWrapper) {
         messageHandler.registerMessage(DummyMessageHandler, MessagePlotLayout::class.java, MessagePlotLayout.DISCRIMINATOR, Side.CLIENT)
+    }
+
+    override fun getPlotManager(side: Side): PlotManager? {
+        return when (side) {
+            Side.SERVER -> Modeoff.plotManagerServer
+            else -> null
+        }
     }
 }

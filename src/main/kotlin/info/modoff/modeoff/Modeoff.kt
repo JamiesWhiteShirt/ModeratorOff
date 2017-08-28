@@ -2,9 +2,10 @@ package info.modoff.modeoff
 
 import info.modoff.modeoff.api.ConfigValues
 import info.modoff.modeoff.common.CommonProxy
-import info.modoff.modeoff.common.PlotLayout
+import info.modoff.modeoff.common.plot.PlotLayout
+import info.modoff.modeoff.common.plot.PlotManagerServer
 import info.modoff.modeoff.common.command.CommandAssign
-import info.modoff.modeoff.common.command.CommandManager
+import info.modoff.modeoff.common.command.CommandManagePlot
 import info.modoff.modeoff.common.command.CommandRank
 import info.modoff.modeoff.common.command.CommandTpPlot
 import net.minecraftforge.fml.common.Mod
@@ -52,30 +53,37 @@ object Modeoff {
         proxy.postInit(e)
     }
 
-    var serverPlotLayout: PlotLayout? = null
+    var plotManagerServer: PlotManagerServer? = null
+    private set
 
     @Mod.EventHandler
     fun onServerStarting(event: FMLServerStartingEvent) {
-        serverPlotLayout = PlotLayout(
-            ConfigValues.firstPlotX,
-            ConfigValues.firstPlotY,
-            ConfigValues.firstPlotZ,
-            ConfigValues.directionOfRows,
-            ConfigValues.directionOfColumns,
-            ConfigValues.plotGridRows,
-            ConfigValues.plotGridColumns,
-            ConfigValues.plotSize,
-            ConfigValues.plotMarginWidth,
-            ConfigValues.plotWorldDimensionID
+        val plotManager = PlotManagerServer(
+            event.server,
+            PlotLayout(
+                ConfigValues.firstPlotX,
+                ConfigValues.firstPlotY,
+                ConfigValues.firstPlotZ,
+                ConfigValues.directionOfRows,
+                ConfigValues.directionOfColumns,
+                ConfigValues.plotGridRows,
+                ConfigValues.plotGridColumns,
+                ConfigValues.plotSize,
+                ConfigValues.plotMarginWidth,
+                ConfigValues.plotWorldDimensionID
+            )
         )
 
-        event.registerServerCommand(CommandAssign())
-        event.registerServerCommand(CommandTpPlot())
-        event.registerServerCommand(CommandManager())
+        event.registerServerCommand(CommandAssign(plotManager))
+        event.registerServerCommand(CommandTpPlot(plotManager))
+        event.registerServerCommand(CommandManagePlot())
         event.registerServerCommand(CommandRank())
+
+        plotManagerServer = plotManager
     }
 
+    @Mod.EventHandler
     fun serverClose(event: FMLServerStoppedEvent) {
-        serverPlotLayout = null
+        plotManagerServer = null
     }
 }

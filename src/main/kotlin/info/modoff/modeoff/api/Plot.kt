@@ -1,17 +1,13 @@
 package info.modoff.modeoff.api
 
-import info.modoff.modeoff.api.ConfigValues
-import info.modoff.modeoff.api.PlotAssigningManager
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 
-import java.util.UUID
-
 /**
  * Created by LordSaad.
  */
-class PlotManager {
+class Plot {
     companion object {
         fun teleportToPlot(player: EntityPlayer?, plotID: Int) {
             if (plotID < 0) return
@@ -41,13 +37,11 @@ class PlotManager {
     }
 
 
-    val uuid: UUID
-    var plotID = -1
+    val plotID: Int
     val corner1: BlockPos
     val corner2: BlockPos
 
-    constructor(uuid: UUID, plotId: Int) {
-        this.uuid = uuid
+    constructor(plotId: Int) {
         this.plotID = plotId
 
         val pos = BlockPos.MutableBlockPos(ConfigValues.firstPlotX, ConfigValues.firstPlotY, ConfigValues.firstPlotZ)
@@ -61,8 +55,6 @@ class PlotManager {
         corner1 = BlockPos(pos.x - ConfigValues.plotSize / 2, pos.y, pos.z - ConfigValues.plotSize / 2)
         corner2 = BlockPos(pos.x + ConfigValues.plotSize / 2, pos.y, pos.z + ConfigValues.plotSize / 2)
     }
-
-    constructor(player: EntityPlayer) : this(player.uniqueID, PlotAssigningManager.getPlotForUUID(player.uniqueID))
 
     fun teleportPlayerToCenter(player: EntityPlayer) {
         teleportToPlot(player, plotID)

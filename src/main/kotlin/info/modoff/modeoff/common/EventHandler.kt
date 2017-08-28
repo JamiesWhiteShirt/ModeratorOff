@@ -1,8 +1,7 @@
 package info.modoff.modeoff.common
 
 import info.modoff.modeoff.Modeoff
-import info.modoff.modeoff.api.PlotManager
-import info.modoff.modeoff.common.network.message.MessagePlotLayout
+import info.modoff.modeoff.util.side
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.event.entity.player.PlayerEvent
@@ -16,93 +15,80 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent as FMLPlayerEvent
  * Created by LordSaad.
  */
 class EventHandler {
-
     @SubscribeEvent
     fun leftClickBlock(event: PlayerInteractEvent.LeftClickBlock) {
-        if (Modeoff.proxy.teamMembers.contains(event.entityPlayer.uniqueID)) return
-        if (!Modeoff.proxy.contestants.contains(event.entityPlayer.uniqueID)) {
-            event.useItem = Event.Result.DENY
-            event.useBlock = Event.Result.DENY
-            event.isCanceled = true
-            return
+        val plotManager = Modeoff.proxy.getPlotManager(event.side)
+        if (plotManager != null) {
+            val uuid = event.entityPlayer.uniqueID
+            if (Modeoff.proxy.teamMembers.contains(uuid)) return
+            if (!Modeoff.proxy.contestants.contains(uuid)) {
+                event.useItem = Event.Result.DENY
+                event.useBlock = Event.Result.DENY
+                event.isCanceled = true
+                return
+            }
+            val plot = plotManager.getPlotByAssignedUUID(uuid)
+            if (plot != null) {
+                event.useItem = Event.Result.DENY
+                event.useBlock = Event.Result.DENY
+                event.isCanceled = true
+                return
+            }
         }
-        val manager = PlotManager(event.entityPlayer)
-        if (manager.plotID < 0) {
-            event.useItem = Event.Result.DENY
-            event.useBlock = Event.Result.DENY
-            event.isCanceled = true
-            return
-        }
-        if (manager.corner1 == null || manager.corner2 == null) {
-            event.useItem = Event.Result.DENY
-            event.useBlock = Event.Result.DENY
-            event.isCanceled = true
-            return
-        }
-
-        if (isWithinBounds(manager.corner1, manager.corner2, event.pos)) event.isCanceled = true
     }
 
     @SubscribeEvent
     fun onBreakBlock(event: BlockEvent.BreakEvent) {
-        if (Modeoff.proxy.teamMembers.contains(event.player.uniqueID)) return
-        if (!Modeoff.proxy.contestants.contains(event.player.uniqueID)) {
-            event.isCanceled = true
-            return
+        val plotManager = Modeoff.proxy.getPlotManager(event.world.side)
+        if (plotManager != null) {
+            val uuid = event.player.uniqueID
+            if (Modeoff.proxy.teamMembers.contains(uuid)) return
+            if (!Modeoff.proxy.contestants.contains(uuid)) {
+                event.isCanceled = true
+                return
+            }
+            val plot = plotManager.getPlotByAssignedUUID(uuid)
+            if (plot != null) {
+                event.isCanceled = true
+                return
+            }
         }
-
-        val manager = PlotManager(event.player)
-        if (manager.plotID < 0) {
-            event.isCanceled = true
-            return
-        }
-        if (manager.corner1 == null || manager.corner2 == null) {
-            event.isCanceled = true
-            return
-        }
-
-        if (isWithinBounds(manager.corner1, manager.corner2, event.pos)) event.isCanceled = true
     }
 
     @SubscribeEvent
     fun breakSpeed(event: PlayerEvent.BreakSpeed) {
-        if (Modeoff.proxy.teamMembers.contains(event.entityPlayer.uniqueID)) return
-        if (!Modeoff.proxy.contestants.contains(event.entityPlayer.uniqueID)) {
-            event.isCanceled = true
-            return
+        val plotManager = Modeoff.proxy.getPlotManager(event.entity.world.side)
+        if (plotManager != null) {
+            val uuid = event.entityPlayer.uniqueID
+            if (Modeoff.proxy.teamMembers.contains(uuid)) return
+            if (!Modeoff.proxy.contestants.contains(uuid)) {
+                event.isCanceled = true
+                return
+            }
+            val plot = plotManager.getPlotByAssignedUUID(uuid)
+            if (plot != null) {
+                event.isCanceled = true
+                return
+            }
         }
-        val manager = PlotManager(event.entityPlayer)
-        if (manager.plotID < 0) {
-            event.isCanceled = true
-            return
-        }
-        if (manager.corner1 == null || manager.corner2 == null) {
-            event.isCanceled = true
-            return
-        }
-
-        if (isWithinBounds(manager.corner1, manager.corner2, event.pos)) event.isCanceled = true
     }
 
     @SubscribeEvent
     fun place(event: BlockEvent.PlaceEvent) {
-        if (Modeoff.proxy.teamMembers.contains(event.player.uniqueID)) return
-        if (!Modeoff.proxy.contestants.contains(event.player.uniqueID)) {
-            event.isCanceled = true
-            return
+        val plotManager = Modeoff.proxy.getPlotManager(event.player.world.side)
+        if (plotManager != null) {
+            val uuid = event.player.uniqueID
+            if (Modeoff.proxy.teamMembers.contains(uuid)) return
+            if (!Modeoff.proxy.contestants.contains(uuid)) {
+                event.isCanceled = true
+                return
+            }
+            val plot = plotManager.getPlotByAssignedUUID(uuid)
+            if (plot != null) {
+                event.isCanceled = true
+                return
+            }
         }
-
-        val manager = PlotManager(event.player)
-        if (manager.plotID < 0) {
-            event.isCanceled = true
-            return
-        }
-        if (manager.corner1 == null || manager.corner2 == null) {
-            event.isCanceled = true
-            return
-        }
-
-        if (isWithinBounds(manager.corner1, manager.corner2, event.pos)) event.isCanceled = true
     }
 
     private fun isWithinBounds(corner1: BlockPos, corner2: BlockPos, pos: BlockPos): Boolean {
@@ -116,6 +102,6 @@ class EventHandler {
 
     @SubscribeEvent
     fun onPlayerLoggedIn(event: FMLPlayerEvent.PlayerLoggedInEvent) {
-        Modeoff.messageHandler.sendTo(MessagePlotLayout(Modeoff.serverPlotLayout), event.player as EntityPlayerMP)
+        Modeoff.plotManagerServer!!.sendToPlayer(event.player as EntityPlayerMP)
     }
 }

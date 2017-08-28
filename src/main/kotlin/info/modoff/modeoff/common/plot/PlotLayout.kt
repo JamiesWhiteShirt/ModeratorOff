@@ -1,4 +1,4 @@
-package info.modoff.modeoff.common
+package info.modoff.modeoff.common.plot
 
 import com.teamwizardry.librarianlib.features.kotlin.readString
 import com.teamwizardry.librarianlib.features.kotlin.readVarInt
