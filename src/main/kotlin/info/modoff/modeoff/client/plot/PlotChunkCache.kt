@@ -1,4 +1,4 @@
-package info.modoff.modeoff.api
+package info.modoff.modeoff.client.plot
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.init.Blocks

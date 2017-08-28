@@ -1,6 +1,6 @@
 package info.modoff.modeoff.common.command
 
-import info.modoff.modeoff.api.Plot
+import info.modoff.modeoff.common.plot.Plot
 import info.modoff.modeoff.common.plot.PlotManagerServer
 import net.minecraft.command.*
 import net.minecraft.server.MinecraftServer

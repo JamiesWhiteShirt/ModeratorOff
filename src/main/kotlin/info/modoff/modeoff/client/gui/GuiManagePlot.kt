@@ -9,9 +9,9 @@ import com.teamwizardry.librarianlib.features.kotlin.createCacheArrayAndReset
 import com.teamwizardry.librarianlib.features.sprite.Sprite
 import com.teamwizardry.librarianlib.features.sprite.Texture
 import info.modoff.modeoff.Modeoff
-import info.modoff.modeoff.api.AreaCacher
+import info.modoff.modeoff.client.AreaCacher
 import info.modoff.modeoff.api.ConfigValues
-import info.modoff.modeoff.api.PlotChunkCache
+import info.modoff.modeoff.client.plot.PlotChunkCache
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BlockRendererDispatcher

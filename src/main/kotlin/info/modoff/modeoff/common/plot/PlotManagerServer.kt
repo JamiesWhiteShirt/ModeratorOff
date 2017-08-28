@@ -6,7 +6,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.teamwizardry.librarianlib.features.kotlin.serialize
 import info.modoff.modeoff.Modeoff
-import info.modoff.modeoff.api.Plot
+import info.modoff.modeoff.common.plot.Plot
 import info.modoff.modeoff.common.network.message.MessagePlotLayout
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.server.MinecraftServer
