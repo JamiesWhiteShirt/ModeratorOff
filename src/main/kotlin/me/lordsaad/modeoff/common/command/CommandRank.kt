@@ -21,7 +21,7 @@ class CommandRank : CommandBase() {
 
     @Throws(CommandException::class)
     override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<String>) {
-        if (sender !is EntityPlayer || RankManager.INSTANCE.getPlayerRank(sender.name)?.editOthers ?: false) {
+        if (sender !is EntityPlayer || RankManager.getPlayerRank(sender.name)?.editOthers ?: false) {
             if (args.size < 2) throw WrongUsageException(getUsage(sender))
 
             val (operation, player) = args
@@ -30,12 +30,12 @@ class CommandRank : CommandBase() {
                 "set" -> {
                     if (args.size != 3) throw WrongUsageException(getUsage(sender))
                     val (_, _, rank) = args
-                    RankManager.INSTANCE.setPlayerRank(player, rank)
+                    RankManager.setPlayerRank(player, rank)
                     sender.sendMessage(TextComponentString(TextFormatting.GREEN.toString() + "Rank of player '" + TextFormatting.GOLD + player + TextFormatting.GREEN + "' was set to '" + TextFormatting.GOLD + rank + TextFormatting.GREEN + "' successfully!"))
                 }
                 "remove" -> {
                     if (args.size != 2) throw WrongUsageException(getUsage(sender))
-                    RankManager.INSTANCE.removePlayerRank(player)
+                    RankManager.removePlayerRank(player)
                     sender.sendMessage(TextComponentString(TextFormatting.GREEN.toString() + "Rank of player '" + TextFormatting.GOLD + args[1] + TextFormatting.GREEN + "' was removed successfully!"))
                 }
                 else -> throw WrongUsageException(getUsage(sender))

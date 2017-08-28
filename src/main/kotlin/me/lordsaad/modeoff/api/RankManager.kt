@@ -9,8 +9,7 @@ import java.io.*
 /**
  * Created by LordSaad.
  */
-class RankManager private constructor() {
-
+object RankManager {
     var directory: File? = null
     var config: File? = null
 
@@ -148,9 +147,5 @@ class RankManager private constructor() {
             e.printStackTrace()
         }
 
-    }
-
-    companion object {
-        var INSTANCE = RankManager()
     }
 }

@@ -99,7 +99,7 @@ open class CommonProxy {
             }
             Modeoff.logger.info(ranksFolder.name + " has been created successfully!")
         }
-        RankManager.INSTANCE.directory = ranksFolder
+        RankManager.directory = ranksFolder
 
         val rankConfig = File(ranksFolder, "ranks_config")
         try {
@@ -149,6 +149,6 @@ open class CommonProxy {
             e.printStackTrace()
         }
 
-        RankManager.INSTANCE.config = rankConfig
+        RankManager.config = rankConfig
     }
 }
