@@ -101,7 +101,7 @@ public class CommonProxy {
 				}
 			}
 			Modeoff.logger.info("Finished downloading lists!");
-		} catch (IOException e) {
+		} catch (IOException | JsonParseException e) {
 			e.printStackTrace();
 		}
 

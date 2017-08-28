@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
     }
 }
 
@@ -35,10 +35,13 @@ minecraft {
 }
 
 repositories {
-    mavenCentral()
+	maven {
+		url "http://maven.bluexin.be/repository/snapshots/"
+	}
 }
 
 dependencies {
+	compile "com.teamwizardry.librarianlib:librarianlib-1.12:4.0-SNAPSHOT:deobf"
 }
 
 processResources {

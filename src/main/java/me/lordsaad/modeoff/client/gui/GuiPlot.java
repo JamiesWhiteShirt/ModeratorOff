@@ -17,7 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockRenderLayer;
@@ -118,7 +118,7 @@ public class GuiPlot extends GuiBase {
 			mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			for (BlockRenderLayer layer : blocks.keySet()) {
 				Tessellator tes = Tessellator.getInstance();
-				VertexBuffer buffer = tes.getBuffer();
+				BufferBuilder buffer = tes.getBuffer();
 
 				buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 				buffer.addVertexData(vboCaches.get(layer));
@@ -144,7 +144,7 @@ public class GuiPlot extends GuiBase {
 
 		for (BlockRenderLayer layer : blocks.keySet()) {
 			Tessellator tes = Tessellator.getInstance();
-			VertexBuffer buffer = tes.getBuffer();
+			BufferBuilder buffer = tes.getBuffer();
 			BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
 			if (vboCaches.get(layer) == null) {
