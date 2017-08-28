@@ -1,8 +1,8 @@
-package me.lordsaad.modeoff.common.command
+package info.modoff.modeoff.common.command
 
-import me.lordsaad.modeoff.Modeoff
-import me.lordsaad.modeoff.api.PlotAssigningManager
-import me.lordsaad.modeoff.api.PlotManager
+import info.modoff.modeoff.Modeoff
+import info.modoff.modeoff.api.PlotAssigningManager
+import info.modoff.modeoff.api.PlotManager
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
@@ -30,11 +30,11 @@ class CommandAssign : CommandBase() {
         if (sender is EntityPlayer) {
             val player = when (args.size) {
                 0 -> {
-                    CommandBase.getCommandSenderAsPlayer(sender)
+                    getCommandSenderAsPlayer(sender)
                 }
                 1 -> {
                     val (player) = args
-                    CommandBase.getPlayer(server, sender, player)
+                    getPlayer(server, sender, player)
                 }
                 else -> throw WrongUsageException(getUsage(sender))
             }
@@ -56,6 +56,6 @@ class CommandAssign : CommandBase() {
 
 
     override fun getTabCompletions(server: MinecraftServer, sender: ICommandSender, args: Array<String>, targetPos: BlockPos?): List<String> {
-        return if (args.size == 1) CommandBase.getListOfStringsMatchingLastWord(args, *server.onlinePlayerNames) else emptyList<String>()
+        return if (args.size == 1) getListOfStringsMatchingLastWord(args, *server.onlinePlayerNames) else emptyList<String>()
     }
 }

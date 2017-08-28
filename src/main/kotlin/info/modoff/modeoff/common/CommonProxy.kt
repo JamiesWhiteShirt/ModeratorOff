@@ -1,14 +1,14 @@
-package me.lordsaad.modeoff.common
+package info.modoff.modeoff.common
 
 import com.google.gson.*
 import com.teamwizardry.librarianlib.features.config.EasyConfigHandler
 import com.teamwizardry.librarianlib.features.kotlin.serialize
 import com.teamwizardry.librarianlib.features.network.PacketHandler
-import me.lordsaad.modeoff.Modeoff
-import me.lordsaad.modeoff.api.ConfigValues
-import me.lordsaad.modeoff.api.RankManager
-import me.lordsaad.modeoff.client.gui.GuiHandler
-import me.lordsaad.modeoff.common.network.PacketManagerGui
+import info.modoff.modeoff.Modeoff
+import info.modoff.modeoff.api.ConfigValues
+import info.modoff.modeoff.api.RankManager
+import info.modoff.modeoff.client.gui.GuiHandler
+import info.modoff.modeoff.common.network.PacketManagerGui
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent

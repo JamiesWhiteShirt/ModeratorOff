@@ -1,9 +1,9 @@
-package me.lordsaad.modeoff.common.network
+package info.modoff.modeoff.common.network
 
 import com.teamwizardry.librarianlib.features.network.PacketBase
-import me.lordsaad.modeoff.Modeoff
-import me.lordsaad.modeoff.api.PlotAssigningManager
-import me.lordsaad.modeoff.api.PlotManager
+import info.modoff.modeoff.Modeoff
+import info.modoff.modeoff.api.PlotAssigningManager
+import info.modoff.modeoff.api.PlotManager
 import net.minecraft.client.Minecraft
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext

@@ -1,4 +1,4 @@
-package me.lordsaad.modeoff.api
+package info.modoff.modeoff.api
 
 import java.awt.*
 

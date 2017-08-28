@@ -1,4 +1,4 @@
-package me.lordsaad.modeoff.client.gui
+package info.modoff.modeoff.client.gui
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos

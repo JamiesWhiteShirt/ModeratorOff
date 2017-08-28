@@ -1,4 +1,4 @@
-package me.lordsaad.modeoff.api
+package info.modoff.modeoff.api
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing

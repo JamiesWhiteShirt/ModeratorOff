@@ -1,6 +1,6 @@
-package me.lordsaad.modeoff.server
+package info.modoff.modeoff.client
 
-import me.lordsaad.modeoff.common.CommonProxy
+import info.modoff.modeoff.common.CommonProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 /**
  * Created by LordSaad.
  */
-class ServerProxy : CommonProxy() {
+class ClientProxy : CommonProxy() {
     override fun preInit(event: FMLPreInitializationEvent) {
         super.preInit(event)
     }

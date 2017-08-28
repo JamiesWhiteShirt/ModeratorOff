@@ -1,7 +1,7 @@
-package me.lordsaad.modeoff.common
+package info.modoff.modeoff.common
 
-import me.lordsaad.modeoff.Modeoff
-import me.lordsaad.modeoff.api.PlotManager
+import info.modoff.modeoff.Modeoff
+import info.modoff.modeoff.api.PlotManager
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent

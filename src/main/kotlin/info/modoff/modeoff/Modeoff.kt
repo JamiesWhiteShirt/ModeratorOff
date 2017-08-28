@@ -1,10 +1,10 @@
-package me.lordsaad.modeoff
+package info.modoff.modeoff
 
-import me.lordsaad.modeoff.common.CommonProxy
-import me.lordsaad.modeoff.common.command.CommandAssign
-import me.lordsaad.modeoff.common.command.CommandManager
-import me.lordsaad.modeoff.common.command.CommandRank
-import me.lordsaad.modeoff.common.command.CommandTpPlot
+import info.modoff.modeoff.common.CommonProxy
+import info.modoff.modeoff.common.command.CommandAssign
+import info.modoff.modeoff.common.command.CommandManager
+import info.modoff.modeoff.common.command.CommandRank
+import info.modoff.modeoff.common.command.CommandTpPlot
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -25,8 +25,8 @@ object Modeoff {
     const val MOD_NAME = "Modeoff"
     const val VERSION = "1.0"
 
-    const val CLIENT = "me.lordsaad.modeoff.client.ClientProxy"
-    const val SERVER = "me.lordsaad.modeoff.server.ServerProxy"
+    const val CLIENT = "ClientProxy"
+    const val SERVER = "ServerProxy"
 
     lateinit var logger: Logger private set
 

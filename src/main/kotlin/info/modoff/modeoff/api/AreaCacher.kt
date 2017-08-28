@@ -1,4 +1,4 @@
-package me.lordsaad.modeoff.api
+package info.modoff.modeoff.api
 
 import com.google.common.collect.HashMultimap
 import net.minecraft.block.state.IBlockState

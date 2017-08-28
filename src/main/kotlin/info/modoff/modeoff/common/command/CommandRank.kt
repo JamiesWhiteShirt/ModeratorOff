@@ -1,6 +1,6 @@
-package me.lordsaad.modeoff.common.command
+package info.modoff.modeoff.common.command
 
-import me.lordsaad.modeoff.api.RankManager
+import info.modoff.modeoff.api.RankManager
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
@@ -46,6 +46,6 @@ class CommandRank : CommandBase() {
 
 
     override fun getTabCompletions(server: MinecraftServer, sender: ICommandSender, args: Array<String>, targetPos: BlockPos?): List<String> {
-        return if (args.size >= 2) CommandBase.getListOfStringsMatchingLastWord(args, *server.onlinePlayerNames) else emptyList<String>()
+        return if (args.size >= 2) getListOfStringsMatchingLastWord(args, *server.onlinePlayerNames) else emptyList<String>()
     }
 }

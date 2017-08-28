@@ -1,4 +1,4 @@
-package me.lordsaad.modeoff.client.gui
+package info.modoff.modeoff.client.gui
 
 import com.google.common.collect.HashMultimap
 import com.teamwizardry.librarianlib.features.gui.GuiBase
@@ -8,10 +8,10 @@ import com.teamwizardry.librarianlib.features.gui.components.ComponentVoid
 import com.teamwizardry.librarianlib.features.kotlin.createCacheArrayAndReset
 import com.teamwizardry.librarianlib.features.sprite.Sprite
 import com.teamwizardry.librarianlib.features.sprite.Texture
-import me.lordsaad.modeoff.Modeoff
-import me.lordsaad.modeoff.api.AreaCacher
-import me.lordsaad.modeoff.api.ConfigValues
-import me.lordsaad.modeoff.api.PlotChunkCache
+import info.modoff.modeoff.Modeoff
+import info.modoff.modeoff.api.AreaCacher
+import info.modoff.modeoff.api.ConfigValues
+import info.modoff.modeoff.api.PlotChunkCache
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BlockRendererDispatcher

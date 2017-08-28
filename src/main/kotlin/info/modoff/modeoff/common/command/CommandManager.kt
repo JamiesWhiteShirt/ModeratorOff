@@ -1,7 +1,7 @@
-package me.lordsaad.modeoff.common.command
+package info.modoff.modeoff.common.command
 
 import com.teamwizardry.librarianlib.features.network.PacketHandler
-import me.lordsaad.modeoff.common.network.PacketManagerGui
+import info.modoff.modeoff.common.network.PacketManagerGui
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
@@ -26,7 +26,7 @@ class CommandManager : CommandBase() {
         //	}
         if (args.isNotEmpty()) throw WrongUsageException(getUsage(sender))
 
-        val player = CommandBase.getCommandSenderAsPlayer(sender)
+        val player = getCommandSenderAsPlayer(sender)
         PacketHandler.NETWORK.sendTo(PacketManagerGui(), player as EntityPlayerMP)
     }
 }

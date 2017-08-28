@@ -1,11 +1,11 @@
-package me.lordsaad.modeoff.api
+package info.modoff.modeoff.api
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.teamwizardry.librarianlib.features.kotlin.serialize
-import me.lordsaad.modeoff.Modeoff
+import info.modoff.modeoff.Modeoff
 
 import java.io.*
 import java.util.ArrayList
