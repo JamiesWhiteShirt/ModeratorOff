@@ -35,8 +35,8 @@ object Modeoff {
 
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
-        proxy.preInit(event)
         logger = event.modLog
+        proxy.preInit(event)
     }
 
     @Mod.EventHandler
