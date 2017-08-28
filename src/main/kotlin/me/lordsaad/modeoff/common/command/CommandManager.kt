@@ -5,9 +5,9 @@ import me.lordsaad.modeoff.common.network.PacketManagerGui
 import net.minecraft.command.CommandBase
 import net.minecraft.command.CommandException
 import net.minecraft.command.ICommandSender
+import net.minecraft.command.WrongUsageException
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.server.MinecraftServer
-import net.minecraft.util.math.BlockPos
 
 /**
  * Created by LordSaad.
@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos
 class CommandManager : CommandBase() {
     override fun getName() = "plot_manager"
 
-    override fun getUsage(sender: ICommandSender) = "/plot_manager [username]"
+    override fun getUsage(sender: ICommandSender) = "commands.modeoff.plot_manager.usage"
 
     @Throws(CommandException::class)
     override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<String>) {
@@ -24,13 +24,9 @@ class CommandManager : CommandBase() {
         //		sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
         //		return;
         //	}
+        if (args.isNotEmpty()) throw WrongUsageException(getUsage(sender))
+
         val player = CommandBase.getCommandSenderAsPlayer(sender)
-
         PacketHandler.NETWORK.sendTo(PacketManagerGui(), player as EntityPlayerMP)
-    }
-
-
-    override fun getTabCompletions(server: MinecraftServer, sender: ICommandSender, args: Array<String>, targetPos: BlockPos?): List<String> {
-        return if (args.size == 1) CommandBase.getListOfStringsMatchingLastWord(args, *server.onlinePlayerNames) else emptyList<String>()
     }
 }

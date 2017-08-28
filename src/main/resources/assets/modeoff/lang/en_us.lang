@@ -1,0 +1,10 @@
+commands.modeoff.plot_assign.usage=/plot_assign [username]
+commands.modeoff.plot_assign.success='%s' has been assigned plot %s
+commands.modeoff.plot_assign.alreadyAssigned='%s' has already been assigned a plot
+commands.modeoff.plot_manager.usage=/plot_manager
+commands.modeoff.rank.usage=/rank set <username> <rank> OR /rank remove <username>
+commands.modeoff.rank.set.success=Set rank of player '%s' to %s
+commands.modeoff.rank.remove.success=Removed rank of player '%s'
+commands.modeoff.plot_tp.usage=/plot_tp OR /plot_tp <plot|player> OR /plot_tp <player> <plot|player>
+
+chat.type.modeoff.assignedPlot=You have been assigned plot %s

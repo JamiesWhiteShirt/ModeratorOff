@@ -10,8 +10,7 @@ import net.minecraft.command.WrongUsageException
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.server.MinecraftServer
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.text.TextComponentString
-import net.minecraft.util.text.TextFormatting
+import net.minecraft.util.text.TextComponentTranslation
 
 /**
  * Created by LordSaad.
@@ -19,7 +18,7 @@ import net.minecraft.util.text.TextFormatting
 class CommandAssign : CommandBase() {
     override fun getName() = "plot_assign"
 
-    override fun getUsage(sender: ICommandSender) = "/plot_assign [username]"
+    override fun getUsage(sender: ICommandSender) = "commands.modeoff.plot_assign.usage"
 
     @Throws(CommandException::class)
     override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<String>) {
@@ -29,26 +28,28 @@ class CommandAssign : CommandBase() {
         //		return;
         //	}
         if (sender is EntityPlayer) {
-            val player = if (args.size == 1) {
-                val (player) = args
-                if (Modeoff.proxy.teamMembers.contains(sender.uniqueID)) {
-                    CommandBase.getPlayer(server, sender, player)
-                } else {
-                    throw WrongUsageException(getUsage(sender))
+            val player = when (args.size) {
+                0 -> {
+                    CommandBase.getCommandSenderAsPlayer(sender)
                 }
-            } else {
-                CommandBase.getCommandSenderAsPlayer(sender)
+                1 -> {
+                    val (player) = args
+                    CommandBase.getPlayer(server, sender, player)
+                }
+                else -> throw WrongUsageException(getUsage(sender))
             }
 
             if (PlotAssigningManager.isUUIDRegistered(player.uniqueID)) {
                 // TODO: Why does this modify the contestants set?
                 Modeoff.proxy.contestants.add(player.uniqueID)
-                sender.sendMessage(TextComponentString(TextFormatting.RED.toString() + "The plot for '" + TextFormatting.GOLD + player.name + TextFormatting.RED + "' has already been registered. Do /plot_tp to teleport to it."))
+                sender.sendMessage(TextComponentTranslation("commands.modeoff.plot_assign.alreadyAssigned", player.name))
             } else {
                 PlotAssigningManager.saveUUIDToPlot(player.uniqueID, PlotAssigningManager.nextAvailableID)
                 val plotManager = PlotManager(player)
+                sender.sendMessage(TextComponentTranslation("commands.modeoff.plot_assign.success", player.name, plotManager.plotID))
+
                 plotManager.teleportPlayerToCenter(player)
-                sender.sendMessage(TextComponentString(TextFormatting.GREEN.toString() + "A plot has been assigned for '" + TextFormatting.GOLD + player.name + TextFormatting.GREEN + "' successfully! Plot ID: " + PlotAssigningManager.getPlotForUUID(player.uniqueID)))
+                player.sendMessage(TextComponentTranslation("chat.type.modeoff.assignedPlot", plotManager.plotID))
             }
         }
     }

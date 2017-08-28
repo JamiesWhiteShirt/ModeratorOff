@@ -3,7 +3,6 @@ package me.lordsaad.modeoff.common.command
 import me.lordsaad.modeoff.api.PlotAssigningManager
 import me.lordsaad.modeoff.api.PlotManager
 import net.minecraft.command.*
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.server.MinecraftServer
 import net.minecraft.util.math.BlockPos
 
@@ -14,7 +13,7 @@ class CommandTpPlot : CommandBase() {
 
     override fun getName() = "plot_tp"
 
-    override fun getUsage(sender: ICommandSender) = "/plot_tp [username/plotID] [username/plotID]"
+    override fun getUsage(sender: ICommandSender) = "commands.modeoff.plot_tp.usage"
 
     @Throws(CommandException::class)
     override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<String>) {

@@ -8,8 +8,7 @@ import net.minecraft.command.WrongUsageException
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.server.MinecraftServer
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.text.TextComponentString
-import net.minecraft.util.text.TextFormatting
+import net.minecraft.util.text.TextComponentTranslation
 
 /**
  * Created by LordSaad.
@@ -17,7 +16,7 @@ import net.minecraft.util.text.TextFormatting
 class CommandRank : CommandBase() {
     override fun getName() = "rank"
 
-    override fun getUsage(sender: ICommandSender) = "/rank <set/remove> <username> <rank>"
+    override fun getUsage(sender: ICommandSender) = "commands.modeoff.rank.usage"
 
     @Throws(CommandException::class)
     override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<String>) {
@@ -31,17 +30,17 @@ class CommandRank : CommandBase() {
                     if (args.size != 3) throw WrongUsageException(getUsage(sender))
                     val (_, _, rank) = args
                     RankManager.setPlayerRank(player, rank)
-                    sender.sendMessage(TextComponentString(TextFormatting.GREEN.toString() + "Rank of player '" + TextFormatting.GOLD + player + TextFormatting.GREEN + "' was set to '" + TextFormatting.GOLD + rank + TextFormatting.GREEN + "' successfully!"))
+                    sender.sendMessage(TextComponentTranslation("commands.modeoff.rank.set.success", player, rank))
                 }
                 "remove" -> {
                     if (args.size != 2) throw WrongUsageException(getUsage(sender))
                     RankManager.removePlayerRank(player)
-                    sender.sendMessage(TextComponentString(TextFormatting.GREEN.toString() + "Rank of player '" + TextFormatting.GOLD + args[1] + TextFormatting.GREEN + "' was removed successfully!"))
+                    sender.sendMessage(TextComponentTranslation("commands.modeoff.rank.remove.success", player))
                 }
                 else -> throw WrongUsageException(getUsage(sender))
             }
         } else {
-            sender.sendMessage(TextComponentString(TextFormatting.RED.toString() + "You do not have permission to use this command."))
+            throw CommandException("commands.generic.permission")
         }
     }
 
