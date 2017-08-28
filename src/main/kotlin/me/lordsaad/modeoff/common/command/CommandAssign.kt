@@ -40,16 +40,15 @@ class CommandAssign : CommandBase() {
                 CommandBase.getCommandSenderAsPlayer(sender)
             }
 
-            val manager = PlotAssigningManager.INSTANCE
-            if (manager.isUUIDRegistered(player.uniqueID)) {
+            if (PlotAssigningManager.isUUIDRegistered(player.uniqueID)) {
                 // TODO: Why does this modify the contestants set?
                 Modeoff.proxy.contestants.add(player.uniqueID)
                 sender.sendMessage(TextComponentString(TextFormatting.RED.toString() + "The plot for '" + TextFormatting.GOLD + player.name + TextFormatting.RED + "' has already been registered. Do /plot_tp to teleport to it."))
             } else {
-                manager.saveUUIDToPlot(player.uniqueID, manager.nextAvailableID)
+                PlotAssigningManager.saveUUIDToPlot(player.uniqueID, PlotAssigningManager.nextAvailableID)
                 val plotManager = PlotManager(player)
-                plotManager.teleportToCenter()
-                sender.sendMessage(TextComponentString(TextFormatting.GREEN.toString() + "A plot has been assigned for '" + TextFormatting.GOLD + player.name + TextFormatting.GREEN + "' successfully! Plot ID: " + manager.getPlotForUUID(player.uniqueID)))
+                plotManager.teleportPlayerToCenter(player)
+                sender.sendMessage(TextComponentString(TextFormatting.GREEN.toString() + "A plot has been assigned for '" + TextFormatting.GOLD + player.name + TextFormatting.GREEN + "' successfully! Plot ID: " + PlotAssigningManager.getPlotForUUID(player.uniqueID)))
             }
         }
     }

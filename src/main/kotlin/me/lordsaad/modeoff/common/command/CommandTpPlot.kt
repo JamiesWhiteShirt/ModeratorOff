@@ -1,5 +1,6 @@
 package me.lordsaad.modeoff.common.command
 
+import me.lordsaad.modeoff.api.PlotAssigningManager
 import me.lordsaad.modeoff.api.PlotManager
 import net.minecraft.command.*
 import net.minecraft.entity.player.EntityPlayer
@@ -29,7 +30,8 @@ class CommandTpPlot : CommandBase() {
 
         when (args.size) {
             0 -> {
-                PlotManager(CommandBase.getCommandSenderAsPlayer(sender)).teleportToCenter()
+                val player = CommandBase.getCommandSenderAsPlayer(sender)
+                PlotManager(player).teleportPlayerToCenter(player)
             }
             1 -> {
                 val (plot) = args
@@ -38,7 +40,7 @@ class CommandTpPlot : CommandBase() {
             }
             2 -> {
                 val (player, plot) = args
-                val targetPlayer = getPlayerByPlotIdOrPlayer(server,sender, player)
+                val targetPlayer = CommandBase.getPlayer(server, sender, player)
                 val plotManager = getPlotManagerByPlotIdOrPlayer(server, sender, plot)
 
                 PlotManager.teleportToPlot(targetPlayer, plotManager.plotID)
@@ -50,19 +52,9 @@ class CommandTpPlot : CommandBase() {
     private fun getPlotManagerByPlotIdOrPlayer(server: MinecraftServer, sender: ICommandSender, plotIdOrPlayer: String): PlotManager {
         return try {
             val plotID = Integer.parseInt(plotIdOrPlayer)
-            PlotManager(sender.entityWorld, plotID)
+            PlotManager(PlotAssigningManager.getUUIDForPlot(plotID)!!, plotID)
         } catch (e: NumberFormatException) {
             PlotManager(CommandBase.getPlayer(server, sender, plotIdOrPlayer))
-        }
-    }
-
-    private fun getPlayerByPlotIdOrPlayer(server: MinecraftServer, sender: ICommandSender, plotIdOrPlayer: String): EntityPlayer {
-        return try {
-            val plotID = Integer.parseInt(plotIdOrPlayer)
-            val manager = PlotManager(sender.entityWorld, plotID)
-            manager.player ?: throw PlayerNotFoundException("Could not find player of plot id " + plotID, sender)
-        } catch (e: NumberFormatException) {
-            CommandBase.getPlayer(server, sender, plotIdOrPlayer)
         }
     }
 
