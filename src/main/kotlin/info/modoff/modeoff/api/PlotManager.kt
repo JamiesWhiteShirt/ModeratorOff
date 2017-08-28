@@ -1,5 +1,7 @@
 package info.modoff.modeoff.api
 
+import info.modoff.modeoff.api.ConfigValues
+import info.modoff.modeoff.api.PlotAssigningManager
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos

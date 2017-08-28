@@ -7,13 +7,14 @@ import com.teamwizardry.librarianlib.features.network.PacketHandler
 import info.modoff.modeoff.Modeoff
 import info.modoff.modeoff.api.ConfigValues
 import info.modoff.modeoff.api.RankManager
-import info.modoff.modeoff.client.gui.GuiHandler
+import info.modoff.modeoff.common.gui.GuiHandler
 import info.modoff.modeoff.common.network.PacketManagerGui
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.network.NetworkRegistry
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper
 import net.minecraftforge.fml.relauncher.Side
 
 import java.awt.*
@@ -50,7 +51,7 @@ private fun readUUIDSetFromURL(urlString: String): Set<UUID> {
 /**
  * Created by LordSaad.
  */
-open class CommonProxy {
+abstract class CommonProxy {
     lateinit var directory: File
     lateinit var teamMembers: Set<UUID>
     lateinit var contestants: MutableSet<UUID>
@@ -151,4 +152,6 @@ open class CommonProxy {
 
         RankManager.config = rankConfig
     }
+
+    abstract fun registerMessages(messageHandler: SimpleNetworkWrapper)
 }

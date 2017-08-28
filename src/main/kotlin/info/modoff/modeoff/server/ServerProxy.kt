@@ -1,9 +1,13 @@
 package info.modoff.modeoff.server
 
 import info.modoff.modeoff.common.CommonProxy
+import info.modoff.modeoff.common.network.handler.DummyMessageHandler
+import info.modoff.modeoff.common.network.message.MessagePlotLayout
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper
+import net.minecraftforge.fml.relauncher.Side
 
 /**
  * Created by LordSaad.
@@ -19,5 +23,9 @@ class ServerProxy : CommonProxy() {
 
     override fun postInit(event: FMLPostInitializationEvent) {
         super.postInit(event)
+    }
+
+    override fun registerMessages(messageHandler: SimpleNetworkWrapper) {
+        messageHandler.registerMessage(DummyMessageHandler, MessagePlotLayout::class.java, MessagePlotLayout.DISCRIMINATOR, Side.CLIENT)
     }
 }

@@ -1,5 +1,6 @@
-package info.modoff.modeoff.client.gui
+package info.modoff.modeoff.common.gui
 
+import info.modoff.modeoff.client.gui.GuiPlot
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World

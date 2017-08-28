@@ -2,12 +2,15 @@ package info.modoff.modeoff.common
 
 import info.modoff.modeoff.Modeoff
 import info.modoff.modeoff.api.PlotManager
+import info.modoff.modeoff.common.network.message.MessagePlotLayout
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.event.entity.player.PlayerEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.event.world.BlockEvent
 import net.minecraftforge.fml.common.eventhandler.Event
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.gameevent.PlayerEvent as FMLPlayerEvent
 
 /**
  * Created by LordSaad.
@@ -109,5 +112,10 @@ class EventHandler {
         val zMax = Math.max(corner1.z, corner2.z)
 
         return pos.x < xMin || pos.x > xMax || pos.z < zMin || pos.z > zMax
+    }
+
+    @SubscribeEvent
+    fun onPlayerLoggedIn(event: FMLPlayerEvent.PlayerLoggedInEvent) {
+        Modeoff.messageHandler.sendTo(MessagePlotLayout(Modeoff.serverPlotLayout), event.player as EntityPlayerMP)
     }
 }
