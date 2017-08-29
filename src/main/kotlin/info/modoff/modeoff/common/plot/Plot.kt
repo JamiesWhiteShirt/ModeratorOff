@@ -10,9 +10,7 @@ import net.minecraft.util.math.BlockPos
  */
 class Plot(plotId: Int) {
     companion object {
-        private fun getPlotPos(plotID: Int): BlockPos? {
-            if (plotID < 0) return null
-
+        private fun getPlotPos(plotID: Int): BlockPos {
             val pos = BlockPos.MutableBlockPos(ConfigValues.firstPlotX, ConfigValues.firstPlotY, ConfigValues.firstPlotZ)
             pos.add(ConfigValues.plotSize / 2, ConfigValues.plotSize / 2, ConfigValues.plotSize / 2)
 
@@ -45,8 +43,7 @@ class Plot(plotId: Int) {
         if (player.world.provider.dimension != ConfigValues.plotWorldDimensionID)
             player.changeDimension(ConfigValues.plotWorldDimensionID)
 
-        val pos = getPlotPos(plotID) ?: return
-
+        val pos = getPlotPos(plotID)
         player.setPositionAndUpdate(pos.x + 0.5, (pos.y + 2).toDouble(), pos.z + 0.5)
     }
 }
