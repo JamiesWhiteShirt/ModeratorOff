@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos
  */
 class Plot(plotId: Int) {
     companion object {
-        private fun getPlotPos(plotID: Int): BlockPos {
+        fun getPlotPos(plotID: Int): BlockPos {
             val pos = BlockPos.MutableBlockPos(ConfigValues.firstPlotX, ConfigValues.firstPlotY, ConfigValues.firstPlotZ)
             pos.add(ConfigValues.plotSize / 2, ConfigValues.plotSize / 2, ConfigValues.plotSize / 2)
 
