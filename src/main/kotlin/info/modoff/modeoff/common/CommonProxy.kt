@@ -29,19 +29,17 @@ private fun readUUIDSetFromURL(urlString: String): Set<UUID> {
         request.connect()
         val parser = JsonParser()
         val root = parser.parse(InputStreamReader(request.content as InputStream))
-        return root.takeIf { it.isJsonObject }?.let { root ->
-            root.asJsonObject.get("list")?.takeIf { it.isJsonArray }?.let { list ->
-                list.asJsonArray
-                    .filter { it.isJsonObject }
-                    .mapNotNull { it.asJsonObject.get("uuid") }
+        if (root is JsonObject) {
+            val list = root["list"]
+            if (list is JsonArray) {
+                return list
+                    .filterIsInstance<JsonObject>()
+                    .mapNotNull { it["uuid"] }
                     .map { UUID.fromString(it.asString) }
                     .toSet()
             }
-        } ?: throw Exception("Malformed JSON")
-    } catch (e: IOException) {
-        e.printStackTrace()
-    } catch (e: JsonParseException) {
-        e.printStackTrace()
+        }
+        throw Exception("Malformed JSON")
     } catch (e: Exception) {
         e.printStackTrace()
     }

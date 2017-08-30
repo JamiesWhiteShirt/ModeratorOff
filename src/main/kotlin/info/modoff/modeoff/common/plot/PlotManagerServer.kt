@@ -86,9 +86,7 @@ class PlotManagerServer(server: MinecraftServer, layout: PlotLayout) : PlotManag
             if (json.isJsonObject && json.asJsonObject.has("plots") && json.asJsonObject.get("plots").isJsonArray) {
                 val array = json.asJsonObject.getAsJsonArray("plots")
 
-                val plots = ArrayList<JsonObject>()
-                for (element in array)
-                    if (element.isJsonObject) plots.add(element.asJsonObject)
+                val plots = array.filterIsInstance<JsonObject>()
 
                 val newPlot = JsonObject()
                 newPlot.addProperty("uuid", uuid.toString())
@@ -123,21 +121,24 @@ class PlotManagerServer(server: MinecraftServer, layout: PlotLayout) : PlotManag
         return false
     }
 
-    override fun getPlotByAssignedUUID(playerUuid: UUID): Plot? {
+    override fun getPlotByAssignedUUID(uuid: UUID): Plot? {
         try {
             val json = JsonParser().parse(FileReader(plotFile))
-            (json as? JsonObject)?.let {
-                (it["plots"] as? JsonArray)
-                    ?.filterIsInstance<JsonObject>()
-                    ?.forEach {
-                        val id = it["id"]
-                        val uuid = it["uuid"]
-                        if (id != null && uuid != null) {
-                            if (UUID.fromString(uuid.asString) == playerUuid) {
-                                return Plot(id.asInt)
+            if (json is JsonObject) {
+                val plots = json["plots"]
+                if (plots is JsonArray) {
+                    plots
+                        .filterIsInstance<JsonObject>()
+                        .forEach {
+                            val id = it["id"]
+                            val otherUuid = it["uuid"]
+                            if (id != null && otherUuid != null) {
+                                if (UUID.fromString(otherUuid.asString) == uuid) {
+                                    return Plot(id.asInt)
+                                }
                             }
                         }
-                    }
+                }
             }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
@@ -149,18 +150,21 @@ class PlotManagerServer(server: MinecraftServer, layout: PlotLayout) : PlotManag
     fun getUUIDForPlot(plotId: Int): UUID? {
         try {
             val json = JsonParser().parse(FileReader(plotFile))
-            (json as? JsonObject)?.let {
-                (it["plots"] as? JsonArray)
-                    ?.filterIsInstance<JsonObject>()
-                    ?.forEach {
-                        val id = it["id"]
-                        val uuid = it["uuid"]
-                        if (id != null && uuid != null) {
-                            if (id.asInt == plotId) {
-                                return UUID.fromString(uuid.asString)
+            if (json is JsonObject) {
+                val plots = json["plots"]
+                if (plots is JsonArray) {
+                    plots
+                        .filterIsInstance<JsonObject>()
+                        .forEach {
+                            val id = it["id"]
+                            val otherUuid = it["uuid"]
+                            if (id != null && otherUuid != null) {
+                                if (id.asInt == plotId) {
+                                    return UUID.fromString(otherUuid.asString)
+                                }
                             }
                         }
-                    }
+                }
             }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
