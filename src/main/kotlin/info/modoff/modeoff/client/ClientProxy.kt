@@ -4,15 +4,14 @@ import info.modoff.modeoff.Modeoff
 import info.modoff.modeoff.client.network.handler.MessagePlotLayoutHandler
 import info.modoff.modeoff.client.plot.PlotManagerClient
 import info.modoff.modeoff.common.CommonProxy
-import info.modoff.modeoff.common.plot.PlotLayout
-import info.modoff.modeoff.common.network.message.MessagePlotLayout
-import info.modoff.modeoff.common.plot.Plot
+import info.modoff.modeoff.common.network.message.MessageAllPlots
 import info.modoff.modeoff.common.plot.PlotManager
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.math.Vec3d
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.world.WorldEvent
@@ -41,7 +40,7 @@ class ClientProxy : CommonProxy() {
     }
 
     override fun registerMessages(messageHandler: SimpleNetworkWrapper) {
-        messageHandler.registerMessage(MessagePlotLayoutHandler(this), MessagePlotLayout::class.java, MessagePlotLayout.DISCRIMINATOR, Side.CLIENT)
+        messageHandler.registerMessage(MessagePlotLayoutHandler(this), MessageAllPlots::class.java, MessageAllPlots.DISCRIMINATOR, Side.CLIENT)
     }
 
     override fun getPlotManager(side: Side): PlotManager? {
@@ -94,31 +93,41 @@ class ClientProxy : CommonProxy() {
             GlStateManager.disableCull()
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX)
 
-            val layout = plotManager.layout
-            val plotSize = layout.plotSize.toDouble()
-            for (plotId in 0 until (layout.gridColumns * layout.gridRows)) {
-                val pos = Plot.getPlotPos(plotId)
-                bufferbuilder.setTranslation(-x + pos.x, -y + pos.y, -z + pos.z)
+            bufferbuilder.setTranslation(-x, -y, -z)
 
-                bufferbuilder.pos(0.0, 256.0, 0.0).tex(0.0, 256.0).endVertex()
-                bufferbuilder.pos(0.0, 256.0, plotSize).tex(plotSize, 256.0).endVertex()
-                bufferbuilder.pos(0.0, 0.0, plotSize).tex(plotSize, 0.0).endVertex()
-                bufferbuilder.pos(0.0, 0.0, 0.0).tex(0.0, 0.0).endVertex()
+            plotManager.allPlots.forEach { plot ->
+                val min = Vec3d(plot.min)
+                val max = Vec3d(plot.max)
 
-                bufferbuilder.pos(plotSize, 256.0, 0.0).tex(plotSize, 256.0).endVertex()
-                bufferbuilder.pos(plotSize, 256.0, plotSize).tex(0.0, 256.0).endVertex()
-                bufferbuilder.pos(plotSize, 0.0, plotSize).tex(0.0, 0.0).endVertex()
-                bufferbuilder.pos(plotSize, 0.0, 0.0).tex(plotSize, 0.0).endVertex()
+                bufferbuilder.pos(min.x, max.y, min.z).tex(min.z, max.y).endVertex()
+                bufferbuilder.pos(min.x, max.y, max.z).tex(max.z, max.y).endVertex()
+                bufferbuilder.pos(min.x, min.y, max.z).tex(max.z, min.y).endVertex()
+                bufferbuilder.pos(min.x, min.y, min.z).tex(min.z, min.y).endVertex()
 
-                bufferbuilder.pos(0.0, 256.0, 0.0).tex(plotSize, 256.0).endVertex()
-                bufferbuilder.pos(plotSize, 256.0, 0.0).tex(0.0, 256.0).endVertex()
-                bufferbuilder.pos(plotSize, 0.0, 0.0).tex(0.0, 0.0).endVertex()
-                bufferbuilder.pos(0.0, 0.0, 0.0).tex(plotSize, 0.0).endVertex()
+                bufferbuilder.pos(max.x, max.y, min.z).tex(min.z, max.y).endVertex()
+                bufferbuilder.pos(max.x, max.y, max.z).tex(max.z, max.y).endVertex()
+                bufferbuilder.pos(max.x, min.y, max.z).tex(max.z, min.y).endVertex()
+                bufferbuilder.pos(max.x, min.y, min.z).tex(min.z, min.y).endVertex()
 
-                bufferbuilder.pos(0.0, 256.0, plotSize).tex(0.0, 256.0).endVertex()
-                bufferbuilder.pos(plotSize, 256.0, plotSize).tex(plotSize, 256.0).endVertex()
-                bufferbuilder.pos(plotSize, 0.0, plotSize).tex(plotSize, 0.0).endVertex()
-                bufferbuilder.pos(0.0, 0.0, plotSize).tex(0.0, 0.0).endVertex()
+                bufferbuilder.pos(min.x, max.y, min.z).tex(min.x, max.y).endVertex()
+                bufferbuilder.pos(max.x, max.y, min.z).tex(max.x, max.y).endVertex()
+                bufferbuilder.pos(max.x, min.y, min.z).tex(max.x, min.y).endVertex()
+                bufferbuilder.pos(min.x, min.y, min.z).tex(min.x, min.y).endVertex()
+
+                bufferbuilder.pos(min.x, max.y, max.z).tex(min.x, max.y).endVertex()
+                bufferbuilder.pos(max.x, max.y, max.z).tex(max.x, max.y).endVertex()
+                bufferbuilder.pos(max.x, min.y, max.z).tex(max.x, min.y).endVertex()
+                bufferbuilder.pos(min.x, min.y, max.z).tex(min.x, min.y).endVertex()
+
+                bufferbuilder.pos(max.x, min.y, min.z).tex(max.x, min.z).endVertex()
+                bufferbuilder.pos(max.x, min.y, max.z).tex(max.x, max.z).endVertex()
+                bufferbuilder.pos(min.x, min.y, max.z).tex(min.x, max.z).endVertex()
+                bufferbuilder.pos(min.x, min.y, min.z).tex(min.x, min.z).endVertex()
+
+                bufferbuilder.pos(max.x, max.y, min.z).tex(max.x, min.z).endVertex()
+                bufferbuilder.pos(max.x, max.y, max.z).tex(max.x, max.z).endVertex()
+                bufferbuilder.pos(min.x, max.y, max.z).tex(min.x, max.z).endVertex()
+                bufferbuilder.pos(min.x, max.y, min.z).tex(min.x, min.z).endVertex()
             }
 
             tessellator.draw()

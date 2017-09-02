@@ -27,7 +27,7 @@ class CommandAssign(val plotManager: PlotManagerServer) : CommandBase() {
         //		sender.sendMessage(new TextComponentString(TextFormatting.RED + "You do not have permission to use this command."));
         //		return;
         //	}
-        if (sender is EntityPlayer) {
+        /* if (sender is EntityPlayer) {
             val player = when (args.size) {
                 0 -> {
                     getCommandSenderAsPlayer(sender)
@@ -51,7 +51,7 @@ class CommandAssign(val plotManager: PlotManagerServer) : CommandBase() {
                 plot.teleportPlayerToCenter(player)
                 player.sendMessage(TextComponentTranslation("chat.type.modeoff.assignedPlot", plot.plotID))
             }
-        }
+        } */
     }
 
 

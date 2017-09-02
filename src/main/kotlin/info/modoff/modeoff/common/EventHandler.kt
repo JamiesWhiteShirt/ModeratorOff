@@ -19,16 +19,8 @@ class EventHandler {
     fun leftClickBlock(event: PlayerInteractEvent.LeftClickBlock) {
         val plotManager = Modeoff.proxy.getPlotManager(event.side)
         if (plotManager != null) {
-            val uuid = event.entityPlayer.uniqueID
-            if (Modeoff.proxy.teamMembers.contains(uuid)) return
-            if (!Modeoff.proxy.contestants.contains(uuid)) {
-                event.useItem = Event.Result.DENY
-                event.useBlock = Event.Result.DENY
-                event.isCanceled = true
-                return
-            }
-            val plot = plotManager.getPlotByAssignedUUID(uuid)
-            if (plot != null) {
+            val plots = plotManager.getPlotsForPosition(event.pos)
+            if (plots.isNotEmpty()) {
                 event.useItem = Event.Result.DENY
                 event.useBlock = Event.Result.DENY
                 event.isCanceled = true
@@ -41,14 +33,8 @@ class EventHandler {
     fun onBreakBlock(event: BlockEvent.BreakEvent) {
         val plotManager = Modeoff.proxy.getPlotManager(event.world.side)
         if (plotManager != null) {
-            val uuid = event.player.uniqueID
-            if (Modeoff.proxy.teamMembers.contains(uuid)) return
-            if (!Modeoff.proxy.contestants.contains(uuid)) {
-                event.isCanceled = true
-                return
-            }
-            val plot = plotManager.getPlotByAssignedUUID(uuid)
-            if (plot != null) {
+            val plots = plotManager.getPlotsForPosition(event.pos)
+            if (plots.isNotEmpty()) {
                 event.isCanceled = true
                 return
             }
@@ -59,14 +45,8 @@ class EventHandler {
     fun breakSpeed(event: PlayerEvent.BreakSpeed) {
         val plotManager = Modeoff.proxy.getPlotManager(event.entity.world.side)
         if (plotManager != null) {
-            val uuid = event.entityPlayer.uniqueID
-            if (Modeoff.proxy.teamMembers.contains(uuid)) return
-            if (!Modeoff.proxy.contestants.contains(uuid)) {
-                event.isCanceled = true
-                return
-            }
-            val plot = plotManager.getPlotByAssignedUUID(uuid)
-            if (plot != null) {
+            val plots = plotManager.getPlotsForPosition(event.pos)
+            if (plots.isNotEmpty()) {
                 event.isCanceled = true
                 return
             }
@@ -77,27 +57,12 @@ class EventHandler {
     fun place(event: BlockEvent.PlaceEvent) {
         val plotManager = Modeoff.proxy.getPlotManager(event.player.world.side)
         if (plotManager != null) {
-            val uuid = event.player.uniqueID
-            if (Modeoff.proxy.teamMembers.contains(uuid)) return
-            if (!Modeoff.proxy.contestants.contains(uuid)) {
-                event.isCanceled = true
-                return
-            }
-            val plot = plotManager.getPlotByAssignedUUID(uuid)
-            if (plot != null) {
+            val plots = plotManager.getPlotsForPosition(event.pos)
+            if (plots.isNotEmpty()) {
                 event.isCanceled = true
                 return
             }
         }
-    }
-
-    private fun isWithinBounds(corner1: BlockPos, corner2: BlockPos, pos: BlockPos): Boolean {
-        val xMin = Math.min(corner1.x, corner2.x)
-        val xMax = Math.max(corner1.x, corner2.x)
-        val zMin = Math.min(corner1.z, corner2.z)
-        val zMax = Math.max(corner1.z, corner2.z)
-
-        return pos.x < xMin || pos.x > xMax || pos.z < zMin || pos.z > zMax
     }
 
     @SubscribeEvent

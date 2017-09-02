@@ -59,19 +59,7 @@ object Modeoff {
     @Mod.EventHandler
     fun onServerStarting(event: FMLServerStartingEvent) {
         val plotManager = PlotManagerServer(
-            event.server,
-            PlotLayout(
-                ConfigValues.firstPlotX,
-                ConfigValues.firstPlotY,
-                ConfigValues.firstPlotZ,
-                ConfigValues.directionOfRows,
-                ConfigValues.directionOfColumns,
-                ConfigValues.plotGridRows,
-                ConfigValues.plotGridColumns,
-                ConfigValues.plotSize,
-                ConfigValues.plotMarginWidth,
-                ConfigValues.plotWorldDimensionID
-            )
+            event.server
         )
 
         event.registerServerCommand(CommandAssign(plotManager))

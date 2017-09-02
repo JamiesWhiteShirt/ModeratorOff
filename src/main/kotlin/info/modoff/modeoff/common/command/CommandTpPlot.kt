@@ -27,7 +27,7 @@ class CommandTpPlot(val plotManager: PlotManagerServer) : CommandBase() {
         //	return;
         //}
 
-        when (args.size) {
+        /* when (args.size) {
             0 -> {
                 val player = getCommandSenderAsPlayer(sender)
                 plotManager.getPlotByAssignedUUID(player.uniqueID)?.teleportPlayerToCenter(player)
@@ -53,7 +53,7 @@ class CommandTpPlot(val plotManager: PlotManagerServer) : CommandBase() {
         } catch (e: NumberFormatException) {
             val player = getPlayer(server, sender, idOrPlayer)
             plotManager.getPlotByAssignedUUID(player.uniqueID)
-        }
+        } */
     }
 
     override fun getTabCompletions(server: MinecraftServer, sender: ICommandSender, args: Array<String>, targetPos: BlockPos?): List<String> {

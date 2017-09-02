@@ -3,10 +3,6 @@ package info.modoff.modeoff.client.plot
 import info.modoff.modeoff.common.plot.Plot
 import info.modoff.modeoff.common.plot.PlotLayout
 import info.modoff.modeoff.common.plot.PlotManager
-import java.util.*
 
-class PlotManagerClient(layout: PlotLayout) : PlotManager(layout) {
-    override fun getPlotByAssignedUUID(uuid: UUID): Plot? {
-        return null
-    }
+class PlotManagerClient(override val allPlots: List<Plot>) : PlotManager() {
 }
